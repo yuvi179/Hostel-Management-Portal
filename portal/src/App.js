@@ -1,6 +1,8 @@
 import Page3 from "./components/Page3";
 import Login from "./components/Login/Login";
 import Page1 from "./components/Page1";
+import Page7 from "./components/Page7";
+import Page8 from "./components/Page8";
 
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
@@ -13,6 +15,8 @@ function App() {
       <Route path="/page1" element={<Page1 />} />
       <Route path="/login" element={<Login />} />
       <Route path="/page3" element={<Page3 />} />
+      <Route path="/page7" element={<Page7 />} />
+      <Route path="/page8" element={<Page8 />} />
 
     </Routes>
   );
