@@ -1,0 +1,215 @@
+/* Wrapper for the right side login form */
+.login-form-wrapper {
+  background: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Central login box */
+.login-box {
+  width: 350px;
+  padding: 40px 32px 32px 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.09);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Heading */
+.login-box h2 {
+  color: #2196f3;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 32px;
+  letter-spacing: 0.5px;
+}
+
+/* Input fields */
+.login-box input[type="email"],
+.login-box input[type="password"],
+.login-box input[type="text"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 7px;
+  font-size: 1rem;
+  margin-bottom: 18px;
+  transition: border 0.2s;
+  background: #fafbfc;
+}
+
+.login-box input:focus {
+  border-color: #2196f3;
+  outline: none;
+  background: #fff;
+}
+
+/* Login button */
+.login-box .btn-primary {
+  width: 100%;
+  background: #2196f3;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 12px 0;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(33,150,243,0.08);
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.login-box .btn-primary:hover {
+  background: #1976d2;
+}
+
+/* Forgot Password and Change Password links */
+.login-box .links {
+  margin-top: 14px;
+  text-align: center;
+}
+
+.login-box .links a {
+  color: #2196f3;
+  font-size: 0.97rem;
+  text-decoration: none;
+  margin: 0 4px;
+  transition: text-decoration 0.2s;
+}
+
+.login-box .links a:hover {
+  text-decoration: underline;
+}
+
+/* Container */
+.login-container {
+  max-width: 350px;
+  margin-top: 100px;
+  margin-bottom: 50px;
+  /* text-align: center; */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Title */
+.login-container h2 {
+  font-size: 24px;
+  color: #1e88e5;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+/* Input Box Wrapper */
+.box1, .box2 {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+
+/* Input Fields */
+input.email,
+input.password {
+  width: 100%;
+  padding: 12px 12px 12px 42px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+  outline: none;
+}
+
+/* Input on focus */
+input.email:focus,
+input.password:focus {
+  border-color: #1e88e5;
+  box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+}
+
+/* Icon position (optional) */
+.box1::before,
+.box2::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+  opacity: 0.5;
+}
+
+/* Email icon */
+.box1::before {
+  background-image: url('https://img.icons8.com/ios-filled/50/000000/new-post.png');
+  background-repeat: no-repeat;
+  /* background-position: 10px center; */
+  background-size: 16px 16px;         
+  /* margin: auto; */
+  /* height: 45px; */
+  /* border-radius: 8px; */
+  /* border: 1px solid #ccc; */
+}
+
+/* Password icon */
+.box2::before {
+  background-image: url('https://img.icons8.com/ios-glyphs/30/000000/lock--v1.png');
+  background-repeat: no-repeat;
+  /* background-position: 10px center; */
+  background-size: 16px 16px;
+}
+
+/* Login Button */
+.login-button {
+  background: #2196f3;
+  color: white;
+  /* padding: 12px 0; */
+  /* width: 100%; */
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 25px;
+  box-shadow: 0 4px 14px rgba(33, 150, 243, 0.3);
+  transition: 0.3s;
+}
+
+.login-button:hover {
+  background: #1976d2;
+}
+
+/* Links */
+.forgot-password, .change-password {
+  /* display: block; */
+  /* margin-top: 15px; */
+  font-size: 14px;
+  color: #1e88e5;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+.change-password {
+  color: gray;
+}
+
+.change-password a {
+  color: #1e88e5;
+  font-weight: 500;
+}
+
+/* Common styling for both links */
+.link-style {
+  font-size: 14px;
+  color: #1a73e8;
+  text-decoration: underline;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 400;
+}

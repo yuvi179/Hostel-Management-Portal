@@ -1,0 +1,71 @@
+.room-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 15px;
+}
+
+.floor-box {
+  background: rgb(238, 238, 238);
+  border: 1px solid #007bff;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+}
+
+.floor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.label-box {
+  background-color: #0056b3;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.room-type {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 5px;
+}
+
+.room-button {
+  width: 35px;
+  height: 25px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  background-color: white;
+  color: #333;
+}
+
+.room-button.occupied {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+}
+
+.room-button.selected {
+  background-color: #fbbf24;
+  color: white;
+  border: none;
+}
+

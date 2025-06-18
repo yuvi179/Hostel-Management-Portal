@@ -1,0 +1,435 @@
+.my-gradient{
+  /* background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(254,226,226,0.8) 25%, rgba(254,226,226,1) calc(100% - 350px),rgba(255,255,255, 0) calc(100% - 349px), rgba(255,255,255,0) 100%); */
+  margin-top:0px;
+  z-index: 1;
+}
+
+#id-53 {
+  background: #f6f9fc;
+  padding: 1rem;
+  padding-left: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.9;
+  width: 250px;
+  /* border-right: 1px solid #ccc; */
+}
+
+.wave-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: auto;
+}
+
+.sidebar-container {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(161, 242, 255, 0.85);
+  padding: 20px;
+  width: 25%;
+  /* height: 600px; */
+  /* border-radius: 10px; */
+}
+
+#id-55 {
+  margin-top: 20px;
+}
+
+#id-57 {
+  /* font-size: medium; */
+  /* border: 2px solid black; */
+  font-family: sans-serif;
+  text-align: center;
+  line-height: 1.5;            /* Optional: for spacing between lines */
+  margin-top: 10px;            /* Optional: space from logo */
+  font-weight: 500;            /* Adjust weight if needed */
+  font-size: 14px;             /* Optional: control size */
+  margin-bottom: 25px;
+}
+
+
+.btn {
+  display: flex;
+  align-items: center;
+  padding: 5px 5px;
+  padding-left: 20px;
+  margin: 6px 0;
+  border: none;
+  background: transparent;
+  color: #333;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 0 20px 20px 0;  /* Only round right side */
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.btn:hover {
+  background-color: #87d7ff;
+  cursor: pointer;
+  box-shadow:inset;
+  /* padding-top: 3px;
+  padding-bottom: 3px; */
+  /* margin-left: 0px; */
+}
+
+.btn.active {
+  background-color: #7fd4ff; /* Same as hover */
+  /* border-radius: 0 20px 20px 0; */
+}
+
+.dropdown .btn.dropdown-toggle {
+  width: 100%;
+  text-align: left;
+  /* padding: 10px 16px; */
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 0 20px 20px 0; /* Right-rounded */
+  transition: background-color 0.3s ease;
+}
+
+.dropdown .btn.dropdown-toggle:hover {
+  background-color: #87d7ff; /* Light blue */
+}
+
+/* Optional: For active state (when clicked/selected) */
+.dropdown .btn.dropdown-toggle.active {
+  background-color: #7fd4ff;
+}
+
+.sidebar {
+  width: 250px;
+  /* background-color: #fff; */
+  /* padding: 10px 26px; */
+  font-family: sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.menu {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.menu li {
+  margin-bottom: 15px;
+}
+
+.menu-header {
+  /* font-weight: 600; */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  color: #333;
+}
+
+.submenu {
+  list-style: none;
+  padding-left: 28px;
+  margin-top: 8px;
+}
+
+.submenu li {
+  margin: 8px 0;
+}
+
+.submenu a {
+  text-decoration: none;
+  color: #333;
+}
+
+.submenu a:hover {
+  text-decoration: underline;
+}
+
+#id-5N {
+  z-index: 1;
+  color: white;
+  margin-top: 40px;
+}
+
+.icon-container {
+  background: linear-gradient(to bottom right, #b621fe, #e19bf2);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  margin-left: 700px;
+}
+
+.icon {
+  color: white;
+  font-size: 18px;
+}
+
+.bar {
+  background-color: white;
+  opacity: 0.9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 900px;
+  margin-left: 50px;
+  margin-right: 0px;
+  margin-top: 25px;
+  z-index: 1;
+}
+
+#id-5T {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+#id-5P {
+  z-index: 1;
+  margin-left: 50px;
+}
+
+#id-5V {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 16px;
+  flex-wrap: wrap;
+  border: 1px solid gray;
+}
+
+#id-5X,
+#id-61,
+#id-65 {
+  margin-right: 4px;
+  font-weight: 500;
+}
+
+.dropdown .btn {
+  background-color: #00BCD4;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 6px 14px;
+  font-weight: 500;
+}
+
+.dropdown .btn:hover {
+  background-color: #0097a7;
+}
+
+.form-control {
+  min-width: 200px;
+  border-radius: 5px;
+}
+
+#id-69 {
+  margin-left: 10px;
+}
+
+.btn2 {
+  margin: 5px;
+  font-size: 12px;
+  background-color: #4bbffd;
+  border: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 3px;
+  width: 60px;
+  /* border: 0.5px solid black; */
+}
+
+.btn2:hover {
+  background-color: #5abcf1;
+  border: none;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 3px;
+}
+
+#id-5X, #id-61, #id-65 {
+  font-size: 14px;
+}
+
+
+/* Container around all floors */
+.floor-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 2rem;
+}
+
+/* Each floor box */
+.floor-box {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  padding: 16px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header bar for floor info */
+.floor-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.floor-label,
+.building-label {
+  background-color: #2563eb; /* Tailwind's blue-600 */
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.room-type {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Room grid */
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+/* Individual room box */
+.room {
+  width: 48px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Available (default) */
+.room.available {
+  background-color: white;
+  color: #1f2937; /* Tailwind's gray-800 */
+}
+
+/* Occupied */
+.room.occupied {
+  background-color: #1e3a8a; /* Tailwind's blue-900 */
+  color: white;
+  cursor: not-allowed;
+}
+
+/* Selected */
+.room.selected {
+  background-color: #facc15; /* Tailwind's yellow-400 */
+  color: white;
+}
+
+/* Hover effect only for available */
+.room.available:hover {
+  background-color: #e5e7eb; /* Tailwind's gray-200 */
+}
+
+/* Submit button */
+.submit-btn {
+  margin-top: 20px;
+  padding: 6px 13px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 450;
+  margin-left: 750px;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+#first {
+  border: 1px solid #ccc;
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius: 6px;
+  display: flex;
+  /* justify-content: flex-start; */
+  /* align-items: center; */
+  /* flex-wrap: wrap; */
+}
+
+#first > div,
+#first > .dropdown,
+#id-69 {
+  margin-right: 10px;
+  /* margin-bottom: 8px; */
+}
+
+.btn2 {
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn2:hover {
+  background-color: #0097a7;
+}
+
+#id-69 {
+  width: 150px;
+  border-radius: 4px 0 0 4px;
+  font-size: 14px;
+  margin-right: 0;
+}
+
+.search-btn {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  width: 35px;
+  font-size: 16px;
+  border-radius: 0px 4px 4px 0px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 0;
+}
+
+.refresh-btn {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  width: 35px;
+  font-size: 16px;
+  border-radius: 4px;
+  margin-left: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
