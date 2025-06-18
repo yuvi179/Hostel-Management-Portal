@@ -1,25 +1,15 @@
 import React from 'react';
-import "./LoginPage.css";
+import "./Page1.css";
 import { useNavigate } from 'react-router-dom';
 import CreateStudent from './Resource/CreateStudent';
 import { FaGithub, FaFacebookF, FaTwitter, FaLinkedinIn, FaYoutube, FaRegCopyright } from 'react-icons/fa';
-// import background from '';
-
-// import './SocialIcons.css';
 
 export default function Page1() {
 const navigate = useNavigate();
 
   return (
     <div id="id-1" className="d-flex h-100">
-      <div id="id-3" className="h-100" 
-      style={{
-        // backgroundImage: `url("/back.png")`,
-        // backgroundSize: 'cover',
-        // backgroundPosition: 'center',
-        // backgroundRepeat: 'no-repeat',
-        // zIndex: '2'
-      }}>
+      <div id="id-3" className="h-100">
         <img
           src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f8/IIIT_Bangalore_Logo.svg/1200px-IIIT_Bangalore_Logo.svg.png"
           alt=""
@@ -29,7 +19,6 @@ const navigate = useNavigate();
 
         <div className="" id="id-7">International Institute of <br /> Information Technology Bangalore</div>
         <div className="" id="id-9">HOSTEL MANAGEMENT SYSTEM</div>
-        {/* <div className='line border border-2'></div> */}
 
         <div className="white-line"></div>
         <div className="iconLinks" style={{display : "flex"}}>

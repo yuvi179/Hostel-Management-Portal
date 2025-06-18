@@ -1,5 +1,5 @@
         import React, { useState, useEffect } from 'react';
-        import "./SelectRoom.css";
+        import "./Page3.css";
         import { useNavigate } from 'react-router-dom';
         import { FaThLarge, FaBed, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
         import { MdRoomPreferences, MdOutlineReport } from "react-icons/md";
@@ -9,7 +9,7 @@
 import RoomGrid from './Roomgrid';
 
         
-        export default function Page4() {
+        export default function Page3() {
         const navigate = useNavigate();
         const [activeButton, setActiveButton] = useState("dashboard");
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
