@@ -1,0 +1,351 @@
+/* CreateAllotment.module.css */
+.createAllotmentContainer {
+  padding: 0 40px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  margin-bottom: 10px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 80px;
+  margin-bottom: 0px;
+  max-width: 100%;
+}
+
+/* Add margin to left column fields */
+.formGrid .formField:nth-child(odd) {
+  margin-right: 20px;
+}
+
+/* Add margin to right column fields */
+.formGrid .formField:nth-child(even) {
+  margin-left: 20px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.formInput {
+  height: 48px;
+  padding: 14px 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #FFFFFF;
+  transition: all 0.2s ease;
+  color: #374151;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 520px;
+}
+
+/* Styling for required field placeholders with red asterisk */
+.requiredField .formInput::placeholder,
+.requiredField .formTextarea::placeholder,
+.requiredField .formSelect option:first-child {
+  background: linear-gradient(to right, #6B7280 0%, #6B7280 calc(100% - 12px), #EF4444 calc(100% - 12px), #EF4444 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+/* Alternative approach using pseudo-element for asterisk */
+.requiredField {
+  position: relative;
+}
+
+.requiredField .formInput:placeholder-shown::after,
+.requiredField .formTextarea:placeholder-shown::after,
+.requiredField .formSelect:invalid::after {
+  content: '*';
+  color: #EF4444;
+  font-weight: 600;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* For select fields, adjust position to avoid dropdown arrow */
+.requiredField .formSelect:invalid::after {
+  right: 40px;
+}
+
+/* Ensure the asterisk doesn't show when field has value */
+.requiredField .formInput:not(:placeholder-shown)::after,
+.requiredField .formTextarea:not(:placeholder-shown)::after,
+.requiredField .formSelect:valid::after {
+  display: none;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.formTextarea {
+  height: auto;
+  min-height: 96px;
+  resize: vertical;
+  padding: 14px 16px;
+  line-height: 1.5;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  max-width: 520px;
+  width: 100%;
+  font-size: 15px;
+}
+
+.formInput::placeholder,
+.formTextarea::placeholder {
+  color: #6B7280;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.formSelect {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.formSelect option {
+  padding: 8px 12px;
+  font-size: 15px;
+}
+
+.formSelect option:first-child {
+  color: #9CA3AF;
+}
+
+/* Custom Dropdown Styles */
+.dropdownField {
+  position: relative;
+}
+
+.dropdownDisplay {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  margin-top: 4px;
+  background: #FFFFFF;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}
+
+.dropdownMenu.show {
+  display: block;
+}
+
+.dropdownSearch {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 1px solid #E5E7EB;
+  font-size: 14px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: transparent;
+  margin-bottom: 4px;
+  box-sizing: border-box;
+}
+
+.dropdownSearch:focus {
+  outline: none;
+  border-bottom-color: #3B82F6;
+}
+
+.dropdownItem {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 14px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #374151;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  display: block;
+  box-sizing: border-box;
+}
+
+.dropdownItem:hover {
+  background-color: #F3F4F6;
+  color: #1F2937;
+}
+
+.dropdownItemDisabled {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #9CA3AF;
+  font-style: italic;
+}
+
+/* Form Actions */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 24px 0;
+}
+
+.submitButton {
+  background: #2196F3;
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  min-width: 120px;
+}
+
+.submitButton:hover {
+  background: #2563EB;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Toast Styles */
+.toastOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.customToast {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  min-width: 320px;
+  pointer-events: auto;
+  border: 1px solid #E5E7EB;
+}
+
+.successToast {
+  border-left: 4px solid #10B981;
+}
+
+.toastHeader {
+  padding: 16px 20px 8px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #374151;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.toastClose {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #6B7280;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.toastClose:hover {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.toastBody {
+  padding: 0 20px 16px 20px;
+  color: #10B981;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .createAllotmentContainer {
+    padding: 0 20px;
+  }
+  
+  .formGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .formGrid .formField:nth-child(odd),
+  .formGrid .formField:nth-child(even) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  
+  .formActions {
+    justify-content: center;
+    padding: 20px 0;
+    margin-right: 0;
+  }
+  
+  .submitButton {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Field specific adjustments to match design */
+.formField:nth-child(1),
+.formField:nth-child(2),
+.formField:nth-child(3),
+.formField:nth-child(4),
+.formField:nth-child(5) {
+  max-width: 100%;
+}
