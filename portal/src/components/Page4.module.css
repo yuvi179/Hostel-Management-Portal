@@ -1,0 +1,835 @@
+/* CheckIn.css */
+.checkin-container {
+  width: 100%;
+  height: 100vh;
+  background: 
+    radial-gradient(ellipse at center top, #00BCD4 0%, #03A9F4 60%, #FFFFFF 80%),
+    linear-gradient(180deg, #00BCD4 0%, #03A9F4 50%, #FFFFFF 70%);
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.checkin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: transparent;
+  flex-shrink: 0;
+  height: 56px;
+  box-sizing: border-box;
+}
+
+.checkin-header h1 {
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.profile-icon {
+  position: relative;
+}
+
+.profile-circle {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.checkin-content {
+  background: white;
+  margin: 0 16px 16px 16px;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  align-items: flex-start;
+}
+
+.form-group {
+  flex: 1;
+  position: relative;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+  height: 36px;
+}
+
+.form-input:focus {
+  border-color: #00BCD4;
+}
+
+.form-input::placeholder {
+  color: #999;
+  font-size: 13px;
+}
+
+.search-btn {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #00BCD4;
+  border: none;
+  border-radius: 3px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-btn:hover {
+  background: #0097A7;
+}
+
+.search-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.room-display {
+  flex: 0 0 160px;
+}
+
+.room-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #00BCD4;
+  border-radius: 4px;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 500;
+  background: #F0FDFF;
+  box-sizing: border-box;
+  height: 36px;
+}
+
+.calendar-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.calendar-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+  min-height: 60px;
+  max-height: 80px;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.form-textarea:focus {
+  border-color: #00BCD4;
+}
+
+.form-textarea::placeholder {
+  color: #999;
+  font-size: 13px;
+}
+
+.checkin-section {
+  flex: 0 0 120px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.checkin-btn {
+  background: #00BCD4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: 36px;
+}
+
+.checkin-btn:hover {
+  background: #0097A7;
+}
+
+.search-section {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.search-bar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #E0E0E0;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  width: 200px;
+  transition: border-color 0.2s;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  border-color: #00BCD4;
+}
+
+.search-button,
+.filter-button {
+  background: #00BCD4;
+  border: none;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-button:hover,
+.filter-button:hover {
+  background: #0097A7;
+}
+
+.search-button svg,
+.filter-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.table-section {
+  flex: 1;
+  overflow: auto;
+  border-radius: 6px;
+  border: 1px solid #E0E0E0;
+  background: white;
+  min-height: 0;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  background: white;
+}
+
+.data-table th {
+  background: #F8F9FA;
+  padding: 8px 6px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #E0E0E0;
+  border-right: 1px solid #E0E0E0;
+  white-space: nowrap;
+  font-size: 11px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.data-table th:last-child {
+  border-right: none;
+}
+
+.data-table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid #F0F0F0;
+  border-right: 1px solid #F0F0F0;
+  color: #555;
+  vertical-align: middle;
+  font-size: 11px;
+  background: white;
+}
+
+.data-table td:last-child {
+  border-right: none;
+}
+
+.data-table tbody tr:hover {
+  background: #F8F9FA;
+}
+
+.data-table tbody tr:hover td {
+  background: #F8F9FA;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  padding: 30px !important;
+  font-size: 12px;
+  background: white !important;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: capitalize;
+  display: inline-block;
+  min-width: 50px;
+  text-align: center;
+}
+
+.status.active {
+  background: #E8F5E8;
+  color: #2E7D32;
+  border: 1px solid #C8E6C9;
+}
+
+.status.inactive {
+  background: #FFEBEE;
+  color: #C62828;
+  border: 1px solid #FFCDD2;
+}
+
+.status.pending {
+  background: #FFF3E0;
+  color: #F57C00;
+  border: 1px solid #FFE0B2;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.action-btn.check-in {
+  background: #00BCD4;
+  color: white;
+  padding: 6px 10px;
+  border: 1px solid #00BCD4;
+}
+
+.action-btn.check-in:hover {
+  background: #0097A7;
+  border-color: #0097A7;
+}
+
+.action-btn.edit {
+  background: #F5F5F5;
+  color: #666;
+  padding: 6px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid #E0E0E0;
+}
+
+.action-btn.edit:hover {
+  background: #E0E0E0;
+  color: #333;
+  border-color: #BDBDBD;
+}
+
+.action-btn.edit svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .checkin-content {
+    padding: 16px;
+    margin: 0 12px 12px 12px;
+  }
+  
+  .form-row {
+    gap: 12px;
+  }
+  
+  .search-input {
+    width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .checkin-header {
+    padding: 12px 16px;
+    height: 48px;
+  }
+  
+  .checkin-header h1 {
+    font-size: 18px;
+  }
+  
+  .profile-circle {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .checkin-content {
+    margin: 0 8px 8px 8px;
+    padding: 12px;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .room-display {
+    flex: 1;
+  }
+  
+  .checkin-section {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .search-section {
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  
+  .search-bar {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .search-input {
+    width: 200px;
+  }
+  
+  .table-section {
+    font-size: 11px;
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: 6px 4px;
+    font-size: 10px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .action-btn.check-in {
+    font-size: 9px;
+    padding: 3px 6px;
+  }
+  
+  .action-btn.edit {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .action-btn.edit svg {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkin-header {
+    padding: 8px 12px;
+    height: 44px;
+  }
+  
+  .checkin-header h1 {
+    font-size: 16px;
+  }
+  
+  .checkin-content {
+    margin: 0 4px 4px 4px;
+    padding: 8px;
+  }
+  
+  .profile-circle {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .search-input {
+    width: 150px;
+  }
+  
+  .table-section {
+    overflow-x: scroll;
+  }
+  
+  .data-table {
+    min-width: 600px;
+  }
+  
+  .form-input,
+  .room-input,
+  .checkin-btn {
+    height: 32px;
+    font-size: 12px;
+  }
+  
+  .form-textarea {
+    min-height: 50px;
+    max-height: 60px;
+    font-size: 12px;
+  }
+  
+  .search-input {
+    height: 28px;
+    font-size: 12px;
+  }
+  
+  .search-button,
+  .filter-button {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+body, html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f6fcff;
+}
+
+.checkin-root {
+  display: flex;
+  min-height: 100vh;
+  background: #f6fcff;
+}
+
+.checkin-sidebar {
+  width: 300px;
+  background: #e6f4fb;
+  box-shadow: 2px 0 16px 0 rgba(0,0,0,0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 32px;
+  padding-bottom: 32px;
+  z-index: 2;
+}
+.checkin-logo {
+  width: 60px;
+  border-radius: 50%;
+  border: 2px solid #0097a7;
+  margin-bottom: 18px;
+}
+.checkin-institute {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 32px;
+  line-height: 1.4;
+}
+.checkin-nav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.checkin-nav-btn {
+  background: none;
+  border: none;
+  color: #222;
+  font-size: 17px;
+  font-weight: 500;
+  text-align: left;
+  padding: 12px 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+}
+.checkin-nav-btn.active, .checkin-nav-btn:hover {
+  background: #b3e5fc;
+  color: #007bff;
+}
+.checkin-nav-section {
+  width: 100%;
+  margin-top: 12px;
+}
+.checkin-nav-group {
+  margin-bottom: 8px;
+}
+.checkin-nav-btn.submenu {
+  font-size: 16px;
+  padding-left: 40px;
+  color: #444;
+}
+.checkin-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 40px;
+  margin-top: 2px;
+}
+.checkin-dropdown button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 15px;
+  text-align: left;
+  padding: 4px 0 4px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.checkin-dropdown button:hover {
+  background: #e3f2fd;
+}
+
+.checkin-main-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 0 0 0;
+  background: #f6fcff;
+}
+.checkin-title-main {
+  font-size: 28px;
+  font-weight: 600;
+  color: #0097a7;
+  margin-bottom: 24px;
+  align-self: flex-start;
+  margin-left: 32px;
+}
+.checkin-form {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 32px 32px 24px 32px;
+  width: 900px;
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.checkin-form-row-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.checkin-input.search {
+  flex: 1;
+  min-width: 260px;
+  font-size: 16px;
+}
+.checkin-search-btn {
+  background: #0097a7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+.checkin-search-btn:hover {
+  background: #007bff;
+}
+.checkin-room-label {
+  background: #e0e7ef;
+  color: #333;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px 32px;
+  font-size: 17px;
+  margin-left: 24px;
+}
+.checkin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+.checkin-form-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.checkin-input, .checkin-textarea {
+  padding: 12px 16px;
+  border: 1.5px solid #bdbdbd;
+  border-radius: 8px;
+  font-size: 16px;
+  background: #fafcff;
+  transition: border 0.2s;
+}
+.checkin-input:focus, .checkin-textarea:focus {
+  border: 1.5px solid #0097a7;
+  outline: none;
+}
+.checkin-textarea {
+  min-height: 44px;
+  resize: vertical;
+}
+.checkin-shift-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.checkin-shift-label {
+  font-size: 16px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+.checkin-input.shift-remarks {
+  flex: 1;
+  margin-left: 8px;
+}
+.checkin-btn {
+  margin-top: 18px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 0;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+.checkin-btn:hover {
+  background: #0056b3;
+}
+
+.checkin-table-section {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 24px 24px 12px 24px;
+  width: 900px;
+  margin-bottom: 32px;
+}
+.checkin-table-scroll {
+  overflow-x: auto;
+}
+.checkin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+.checkin-table th, .checkin-table td {
+  border: 1px solid #e0e0e0;
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 15px;
+}
+.checkin-table th {
+  background: #e0f7fa;
+  color: #007bff;
+  font-weight: 600;
+}
+.checkin-table-action {
+  background: #0097a7;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.checkin-table-action:hover {
+  background: #007bff;
+}
+
+@media (max-width: 1200px) {
+  .checkin-main-card, .checkin-table-section, .checkin-form {
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+  }
+  .checkin-table {
+    min-width: 800px;
+  }
+}
+@media (max-width: 900px) {
+  .checkin-main-card, .checkin-table-section, .checkin-form {
+    width: 100%;
+    padding: 6px;
+  }
+  .checkin-form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
