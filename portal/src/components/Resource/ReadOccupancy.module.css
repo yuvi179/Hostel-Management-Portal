@@ -1,0 +1,243 @@
+/* ReadOccupancy.module.css */
+
+.readOccupancyContainer {
+  height: 100vh;
+  width: 100%;
+  background-color: #F8FAFC;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  box-sizing: border-box;
+}
+
+.dataGridContainer {
+  height: 100%;
+  background: white;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+  border: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom Table Styles */
+.customTableContainer {
+  flex: 1;
+  overflow: auto;
+  background: white;
+}
+
+.customTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #334155;
+}
+
+.customTable thead {
+  background-color: #E1F5FE;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.customTable th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 500;
+  font-size: 13px;
+  color: #475569;
+  border-bottom: 1px solid #B3E5FC;
+  border-right: 1px solid #B3E5FC;
+  text-transform: none;
+  letter-spacing: 0;
+  white-space: nowrap;
+  background-color: #E1F5FE;
+}
+
+.customTable th:last-child {
+  border-right: none;
+}
+
+.customTable tbody tr {
+  border-bottom: 1px solid #F1F5F9;
+  transition: background-color 0.15s ease;
+}
+
+.customTable tbody tr:hover {
+  background-color: #F8FAFC;
+}
+
+.customTable td {
+  padding: 12px 16px;
+  border-right: 1px solid #F1F5F9;
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.4;
+  vertical-align: middle;
+  background-color: white;
+}
+
+.customTable td:last-child {
+  border-right: none;
+}
+
+.snoHeader {
+  /* Specific styles for S.No. header if needed */
+}
+
+.snoCell {
+  /* Specific styles for S.No. cell if needed */
+}
+
+/* No Data Message */
+.noDataMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #6B7280;
+  background: white;
+  margin: 20px;
+}
+
+.noDataIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.noDataMessage h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 8px 0;
+}
+
+.noDataMessage p {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* Toast Styles */
+.toastOverlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 24px;
+  pointer-events: none;
+}
+
+.customToast {
+  min-width: 300px;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  pointer-events: auto;
+  animation: slideInRight 0.3s ease-out;
+}
+
+.successToast {
+  border-left: 4px solid #10B981;
+}
+
+.toastHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.toastClose {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #9CA3AF;
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toastClose:hover {
+  color: #6B7280;
+}
+
+.toastBody {
+  padding: 0 16px 12px;
+  font-size: 13px;
+  color: #6B7280;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Scrollbar Styles */
+.customTableContainer::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.customTableContainer::-webkit-scrollbar-track {
+  background: #F3F4F6;
+}
+
+.customTableContainer::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 4px;
+}
+
+.customTableContainer::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .customTable th,
+  .customTable td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .readOccupancyContainer {
+    padding: 0;
+    background: white;
+  }
+  
+  .dataGridContainer {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .customTable th,
+  .customTable td {
+    border: 1px solid #000;
+  }
+}
