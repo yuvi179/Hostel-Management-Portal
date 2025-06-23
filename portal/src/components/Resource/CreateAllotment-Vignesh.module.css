@@ -1,34 +1,98 @@
 /* CreateAllotment.module.css */
 .createAllotmentContainer {
-  padding: 0 40px;
+  padding: 20px 40px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  margin-bottom: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.formGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px 80px;
-  margin-bottom: 0px;
-  max-width: 100%;
+/* Search Section */
+.searchSection {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  align-items: center;
 }
 
-/* Add margin to left column fields */
-.formGrid .formField:nth-child(odd) {
-  margin-right: 20px;
+.searchInputContainer {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
 }
 
-/* Add margin to right column fields */
-.formGrid .formField:nth-child(even) {
-  margin-left: 20px;
+.searchInput {
+  width: 100%;
+  height: 48px;
+  padding: 14px 16px 14px 48px;
+  border: 2px solid #3B82F6;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #3B82F6;
+  pointer-events: none;
+}
+
+.selectRoomButton {
+  background: #00BCD4;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.selectRoomButton:hover {
+  background: #00ACC1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Layout */
+.formContainer {
+  display: flex;
+  gap: 40px;
+}
+
+.leftColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rightColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .formField {
   display: flex;
   flex-direction: column;
   position: relative;
-  margin: 0;
-  padding: 0;
 }
 
 .formInput {
@@ -38,81 +102,48 @@
   border-radius: 8px;
   font-size: 15px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #FFFFFF;
-  transition: all 0.2s ease;
+  background-color: #F9FAFB;
   color: #374151;
   box-sizing: border-box;
   width: 100%;
-  max-width: 520px;
-}
-
-/* Styling for required field placeholders with red asterisk */
-.requiredField .formInput::placeholder,
-.requiredField .formTextarea::placeholder,
-.requiredField .formSelect option:first-child {
-  background: linear-gradient(to right, #6B7280 0%, #6B7280 calc(100% - 12px), #EF4444 calc(100% - 12px), #EF4444 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  position: relative;
-}
-
-/* Alternative approach using pseudo-element for asterisk */
-.requiredField {
-  position: relative;
-}
-
-.requiredField .formInput:placeholder-shown::after,
-.requiredField .formTextarea:placeholder-shown::after,
-.requiredField .formSelect:invalid::after {
-  content: '*';
-  color: #EF4444;
-  font-weight: 600;
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* For select fields, adjust position to avoid dropdown arrow */
-.requiredField .formSelect:invalid::after {
-  right: 40px;
-}
-
-/* Ensure the asterisk doesn't show when field has value */
-.requiredField .formInput:not(:placeholder-shown)::after,
-.requiredField .formTextarea:not(:placeholder-shown)::after,
-.requiredField .formSelect:valid::after {
-  display: none;
 }
 
 .formInput:focus {
   outline: none;
   border-color: #3B82F6;
+  background-color: #FFFFFF;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+.formInput::placeholder {
+  color: #9CA3AF;
+  font-weight: 400;
+}
+
 .formTextarea {
-  height: auto;
-  min-height: 96px;
+  min-height: 120px;
   resize: vertical;
   padding: 14px 16px;
   line-height: 1.5;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   border: 1px solid #D1D5DB;
   border-radius: 8px;
-  max-width: 520px;
   width: 100%;
   font-size: 15px;
+  background-color: #F9FAFB;
+  box-sizing: border-box;
 }
 
-.formInput::placeholder,
+.formTextarea:focus {
+  outline: none;
+  border-color: #3B82F6;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
 .formTextarea::placeholder {
-  color: #6B7280;
+  color: #9CA3AF;
   font-weight: 400;
-  font-size: 15px;
 }
 
 .formSelect {
@@ -125,6 +156,11 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  background-color: #F9FAFB;
+}
+
+.formSelect:focus {
+  background-color: #FFFFFF;
 }
 
 .formSelect option {
@@ -148,6 +184,11 @@
   background-repeat: no-repeat;
   background-size: 16px;
   padding-right: 40px;
+  background-color: #F9FAFB;
+}
+
+.dropdownDisplay:focus {
+  background-color: #FFFFFF;
 }
 
 .dropdownMenu {
@@ -214,11 +255,24 @@
   font-style: italic;
 }
 
+/* Date Input Styles */
+.dateInputContainer {
+  position: relative;
+}
+
+.dateInput {
+  background-color: #F9FAFB;
+}
+
+.dateInput:focus {
+  background-color: #FFFFFF;
+}
+
 /* Form Actions */
 .formActions {
   display: flex;
   justify-content: flex-end;
-  padding: 24px 0;
+  padding: 32px 0 16px 0;
 }
 
 .submitButton {
@@ -318,34 +372,27 @@
     padding: 0 20px;
   }
   
-  .formGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
+  .searchSection {
+    flex-direction: column;
+    align-items: stretch;
   }
   
-  .formGrid .formField:nth-child(odd),
-  .formGrid .formField:nth-child(even) {
-    margin-left: 0;
-    margin-right: 0;
+  .searchInputContainer {
+    max-width: none;
+  }
+  
+  .formContainer {
+    flex-direction: column;
+    gap: 20px;
   }
   
   .formActions {
     justify-content: center;
     padding: 20px 0;
-    margin-right: 0;
   }
   
   .submitButton {
     width: 100%;
     max-width: 300px;
   }
-}
-
-/* Field specific adjustments to match design */
-.formField:nth-child(1),
-.formField:nth-child(2),
-.formField:nth-child(3),
-.formField:nth-child(4),
-.formField:nth-child(5) {
-  max-width: 100%;
 }

@@ -15,6 +15,8 @@ const CreateAllotment = () => {
   const [foreignkeyData, setForeignkeyData] = useState<Record<string, any[]>>({});
   const [searchQueries, setSearchQueries] = useState<Record<string, string>>({});
   const [enums, setEnums] = useState<Record<string, any[]>>({});
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
   const regex = /^(g_|archived|extra_data)/;
   const apiUrl = apiConfig.getResourceUrl("allotment")
   const metadataUrl = apiConfig.getResourceMetaDataUrl("Allotment")
@@ -150,134 +152,221 @@ const CreateAllotment = () => {
     setSearchQueries((prev) => ({ ...prev, [fieldName]: value }));
   };
 
+  const toggleDropdown = (fieldName: string) => {
+    setOpenDropdowns((prev) => ({
+      ...prev,
+      [fieldName]: !prev[fieldName]
+    }));
+  };
+
   const getFieldDisplayName = (fieldName: string, isRequired: boolean = false) => {
     // Convert field names to match common naming conventions
     const fieldMappings: Record<string, string> = {
-      'student_id': 'Student ID',
-      'room_id': 'Room ID',
+      'student_id': 'Studentname',
+      'student_name': 'Studentname',
+      'studentname': 'Studentname',
+      'email': 'Email',
+      'mobile': 'Mobile',
+      'degree': 'Degree',
+      'room_id': 'Roomnumber',
+      'room_number': 'Roomnumber',
+      'roomnumber': 'Roomnumber',
       'bed_id': 'Bed ID',
       'allotment_date': 'Allotment Date',
       'allotment_type': 'Allotment Type',
       'status': 'Status',
       'remarks': 'Remarks',
       'semester': 'Semester',
-      'academic_year': 'Academic Year'
+      'academic_year': 'Academic Year',
+      'checkindt': 'Checkindt',
+      'checkoutdt': 'Checkoutdt',
+      'newroomnumber': 'Newroomnumber',
+      'oldroomnumber': 'Oldroomnumber',
+      'isshift': 'Isshift',
+      'rollnumber': 'Rollnumber'
     };
     
     const displayName = fieldMappings[fieldName.toLowerCase()] || fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
     return isRequired ? `${displayName}*` : displayName;
   };
 
+  // Define field order and grouping based on the Figma design
+  const getFieldOrder = () => {
+    const leftColumnFields = ['studentname', 'student_name', 'student_id', 'email', 'roomnumber', 'room_number', 'room_id', 'checkoutdt', 'newroomnumber', 'isshift'];
+    const rightColumnFields = ['degree', 'mobile', 'checkindt', 'remarks', 'oldroomnumber', 'rollnumber'];
+    
+    const leftFields = fields.filter(field => 
+      field.name !== 'id' && 
+      !regex.test(field.name) && 
+      leftColumnFields.includes(field.name.toLowerCase())
+    ).sort((a, b) => leftColumnFields.indexOf(a.name.toLowerCase()) - leftColumnFields.indexOf(b.name.toLowerCase()));
+    
+    const rightFields = fields.filter(field => 
+      field.name !== 'id' && 
+      !regex.test(field.name) && 
+      rightColumnFields.includes(field.name.toLowerCase())
+    ).sort((a, b) => rightColumnFields.indexOf(a.name.toLowerCase()) - rightColumnFields.indexOf(b.name.toLowerCase()));
+    
+    return { leftFields, rightFields };
+  };
+
+  const renderField = (field: any, index: number) => {
+    if (field.foreign) {
+      const options = foreignkeyData[field.foreign] || [];
+      const filteredOptions = options.filter((option) =>
+        option[field.foreign_field].toLowerCase().includes((searchQueries[field.name] || '').toLowerCase())
+      );
+      
+      return (
+        <div key={index} className={`${styles.formField} ${styles.dropdownField}`}>
+          <input
+            type="text"
+            className={`${styles.formInput} ${styles.dropdownDisplay}`}
+            placeholder={getFieldDisplayName(field.name, field.required)}
+            value={dataToSave[field.name] ? 
+              options.find((item) => item[field.foreign_field] === dataToSave[field.name])?.[field.foreign_field] || '' 
+              : ''}
+            readOnly
+            onClick={() => toggleDropdown(field.name)}
+          />
+          <div className={`${styles.dropdownMenu} ${openDropdowns[field.name] ? styles.show : ''}`}>
+            <input
+              type="text"
+              className={styles.dropdownSearch}
+              placeholder={`Search ${getFieldDisplayName(field.name)}`}
+              value={searchQueries[field.name] || ''}
+              onChange={(e) => handleSearchChange(field.name, e.target.value)}
+            />
+            
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((option, i) => (
+                <button
+                  key={i}
+                  className={styles.dropdownItem}
+                  type="button"
+                  onClick={() => {
+                    setDataToSave({ ...dataToSave, [field.name]: option[field.foreign_field] });
+                    toggleDropdown(field.name);
+                  }}
+                >
+                  {option[field.foreign_field]}
+                </button>
+              ))
+            ) : (
+              <span className={styles.dropdownItemDisabled}>No options available</span>
+            )}
+          </div>
+        </div>
+      );
+    } else if (field.isEnum === true) {
+      return (
+        <div key={index} className={styles.formField}>
+          <select
+            name={field.name}
+            required={field.required}
+            value={dataToSave[field.name] || ''}
+            onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
+            className={`${styles.formInput} ${styles.formSelect}`}
+          >
+            <option value="" disabled hidden>{getFieldDisplayName(field.name, field.required)}</option>
+            {Object.keys(enums).length !== 0 && enums[field.possible_value].map((enumValue: any, index: number) => (
+              <option key={index} value={enumValue}>
+                {enumValue}
+              </option>
+            ))}
+          </select>
+        </div>
+      );
+    } else {
+      // Special handling for different field types
+      const isTextarea = field.name.toLowerCase() === 'remarks' || field.type === 'textarea';
+      const isDateField = field.name.toLowerCase().includes('date') || field.name.toLowerCase().includes('dt');
+      
+      if (isTextarea) {
+        return (
+          <div key={index} className={styles.formField}>
+            <textarea
+              name={field.name}
+              required={field.required}
+              placeholder={getFieldDisplayName(field.name, field.required)}
+              value={dataToSave[field.name] || ''}
+              onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
+              className={`${styles.formInput} ${styles.formTextarea}`}
+              rows={4}
+            />
+          </div>
+        );
+      } else if (isDateField) {
+        return (
+          <div key={index} className={`${styles.formField} ${styles.dateInputContainer}`}>
+            <input
+              type="datetime-local"
+              name={field.name}
+              required={field.required}
+              placeholder={getFieldDisplayName(field.name, field.required)}
+              value={dataToSave[field.name] || ''}
+              onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
+              className={`${styles.formInput} ${styles.dateInput}`}
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div key={index} className={styles.formField}>
+            <input
+              type={field.type}
+              name={field.name}
+              required={field.required}
+              placeholder={getFieldDisplayName(field.name, field.required)}
+              value={dataToSave[field.name] || ''}
+              onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
+              className={styles.formInput}
+            />
+          </div>
+        );
+      }
+    }
+  };
+
+  const { leftFields, rightFields } = getFieldOrder();
+
   return (
     <div className={styles.createAllotmentContainer}>
-      <div className={styles.formGrid}>
-        {fields.map((field, index) => {
-          if (field.name !== 'id' && !regex.test(field.name)) {
-            if (field.foreign) {
-              const options = foreignkeyData[field.foreign] || [];
-              const filteredOptions = options.filter((option) =>
-                option[field.foreign_field].toLowerCase().includes((searchQueries[field.name] || '').toLowerCase())
-              );
-              
-              return (
-                <div key={index} className={`${styles.formField} ${styles.dropdownField} ${field.required ? styles.requiredField : ''}`}>
-                  <input
-                    type="text"
-                    className={`${styles.formInput} ${styles.dropdownDisplay}`}
-                    placeholder={getFieldDisplayName(field.name, field.required)}
-                    value={dataToSave[field.name] ? 
-                      options.find((item) => item[field.foreign_field] === dataToSave[field.name])?.[field.foreign_field] || '' 
-                      : ''}
-                    readOnly
-                    onClick={() => {
-                      // Toggle dropdown functionality can be added here
-                    }}
-                  />
-                  <div className={styles.dropdownMenu} aria-labelledby={`dropdownMenu-${field.name}`}>
-                    <input
-                      type="text"
-                      className={styles.dropdownSearch}
-                      placeholder={`Search ${getFieldDisplayName(field.name)}`}
-                      value={searchQueries[field.name] || ''}
-                      onChange={(e) => handleSearchChange(field.name, e.target.value)}
-                    />
-                    
-                    {filteredOptions.length > 0 ? (
-                      filteredOptions.map((option, i) => (
-                        <button
-                          key={i}
-                          className={styles.dropdownItem}
-                          type="button"
-                          onClick={() => {
-                            setDataToSave({ ...dataToSave, [field.name]: option[field.foreign_field] });
-                          }}
-                        >
-                          {option[field.foreign_field]}
-                        </button>
-                      ))
-                    ) : (
-                      <span className={styles.dropdownItemDisabled}>No options available</span>
-                    )}
-                  </div>
-                </div>
-              );
-            } else if (field.isEnum === true) {
-              return (
-                <div key={index} className={`${styles.formField} ${field.required ? styles.requiredField : ''}`}>
-                  <select
-                    name={field.name}
-                    required={field.required}
-                    value={dataToSave[field.name] || ''}
-                    onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
-                    className={`${styles.formInput} ${styles.formSelect}`}
-                  >
-                    <option value="" disabled hidden>{getFieldDisplayName(field.name, field.required)}</option>
-                    {Object.keys(enums).length !== 0 && enums[field.possible_value].map((enumValue: any, index: number) => (
-                      <option key={index} value={enumValue}>
-                        {enumValue}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              );
-            } else {
-              // Special handling for textarea (Remarks field)
-              const isTextarea = field.name.toLowerCase() === 'remarks' || field.type === 'textarea';
-              
-              return (
-                <div key={index} className={`${styles.formField} ${field.required ? styles.requiredField : ''}`}>
-                  {isTextarea ? (
-                    <textarea
-                      name={field.name}
-                      required={field.required}
-                      placeholder={getFieldDisplayName(field.name, field.required)}
-                      value={dataToSave[field.name] || ''}
-                      onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
-                      className={`${styles.formInput} ${styles.formTextarea}`}
-                      rows={4}
-                    />
-                  ) : (
-                    <input
-                      type={field.type}
-                      name={field.name}
-                      required={field.required}
-                      placeholder={getFieldDisplayName(field.name, field.required)}
-                      value={dataToSave[field.name] || ''}
-                      onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
-                      className={styles.formInput}
-                    />
-                  )}
-                </div>
-              );
-            }
-          }
-          return null;
-        })}
+      {/* Search Section */}
+      <div className={styles.searchSection}>
+        <div className={styles.searchInputContainer}>
+          <svg className={styles.searchIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="123456789"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <button className={styles.selectRoomButton}>
+          Select Room
+        </button>
+      </div>
+
+      {/* Form Container */}
+      <div className={styles.formContainer}>
+        {/* Left Column */}
+        <div className={styles.leftColumn}>
+          {leftFields.map((field, index) => renderField(field, index))}
+        </div>
+
+        {/* Right Column */}
+        <div className={styles.rightColumn}>
+          {rightFields.map((field, index) => renderField(field, index))}
+        </div>
       </div>
       
       <div className={styles.formActions}>
         <button className={styles.submitButton} onClick={handleCreate}>
-          Submit
+          Room Allot
         </button>
       </div>
 
