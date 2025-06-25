@@ -224,7 +224,7 @@ const CreateAllotment = () => {
             className={`${styles.formInput} ${styles.dropdownDisplay}`}
             placeholder={getFieldDisplayName(field.name, field.required)}
             value={dataToSave[field.name] ? 
-              options.find((item) => item[field.foreign_field] === dataToSave[field.name])?.[field.foreign_field] || '' 
+              options.find((item) => item[field.name] === dataToSave[field.name])?.[field.name] || '' 
               : ''}
             readOnly
             onClick={() => toggleDropdown(field.name)}
@@ -245,11 +245,11 @@ const CreateAllotment = () => {
                   className={styles.dropdownItem}
                   type="button"
                   onClick={() => {
-                    setDataToSave({ ...dataToSave, [field.name]: option[field.foreign_field] });
+                    setDataToSave({ ...dataToSave, [field.name]: option[field.name] });
                     toggleDropdown(field.name);
                   }}
                 >
-                  {option[field.foreign_field]}
+                  {option[field.name]}
                 </button>
               ))
             ) : (
