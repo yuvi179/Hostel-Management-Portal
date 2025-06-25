@@ -197,10 +197,10 @@ const CreateAllotment = () => {
     // Auto-populate student fields
     const updatedData = { ...dataToSave };
     
-    // Map student data to form fields
-    if (student.studentname || student.student_name || student.name) {
-      updatedData.studentname = student.studentname || student.student_name || student.name;
-      updatedData.student_name = student.studentname || student.student_name || student.name;
+    // Map student data to form fields - Fix the naming convention
+    // Student resource has 'name' attribute, allotment resource expects 'studentname'
+    if (student.name) {
+      updatedData.studentname = student.name; // Map 'name' from student to 'studentname' in allotment
     }
     if (student.email) {
       updatedData.email = student.email;
@@ -226,9 +226,9 @@ const CreateAllotment = () => {
   const getFieldDisplayName = (fieldName: string, isRequired: boolean = false) => {
     // Convert field names to match common naming conventions
     const fieldMappings: Record<string, string> = {
-      'student_id': 'Studentname',
-      'student_name': 'Studentname',
-      'studentname': 'Studentname',
+      /* 'name' : 'Studentname',
+      'student_id': 'Studentname', */
+      'name': 'Studentname',
       'email': 'Email',
       'mobile': 'Mobile',
       'degree': 'Degree',
@@ -257,15 +257,16 @@ const CreateAllotment = () => {
   // Define field order and grouping based on the updated requirements
   const getFieldOrder = () => {
     // Left column: student details (auto-populated from roll number selection)
-    const leftColumnFields = ['studentname', 'student_name', 'student_id', 'email', 'degree', 'mobile'];
+    const leftColumnFields = ['email', 'degree', 'mobile']; // Exclude studentname as it's handled separately
     
     // Right column: other allotment fields (excluding rollnumber as it's now in search section)
-    const rightColumnFields = ['roomnumber', 'room_number', 'room_id', 'checkoutdt', 'newroomnumber', 'isshift', 'checkindt', 'remarks', 'oldroomnumber'];
+    const rightColumnFields = ['checkindnt','checkoutdnt','remarks'];
     
     const leftFields = fields.filter(field => 
       field.name !== 'id' && 
       !regex.test(field.name) && 
       field.name !== 'rollnumber' && // Exclude rollnumber from form fields
+      field.name !== 'studentname' && // Exclude studentname from leftFields
       leftColumnFields.includes(field.name.toLowerCase())
     ).sort((a, b) => leftColumnFields.indexOf(a.name.toLowerCase()) - leftColumnFields.indexOf(b.name.toLowerCase()));
     
@@ -279,9 +280,29 @@ const CreateAllotment = () => {
     return { leftFields, rightFields };
   };
 
+  // Render Name function to explicitly render student name
+  const renderName = () => {
+    const isAutoPopulated = selectedStudent;
+    
+    return (
+      <div className={styles.formField}>
+        <input
+          type="text"
+          name="studentname"
+          placeholder="Student Name*"
+          value={selectedStudent ? selectedStudent.name : (dataToSave.studentname || '')}
+          onChange={(e) => setDataToSave({ ...dataToSave, studentname: e.target.value })}
+          className={`${styles.formInput} ${isAutoPopulated ? styles.autoPopulated : ''}`}
+          readOnly={true}
+        />
+
+      </div>
+    );
+  };
+
   const renderField = (field: any, index: number) => {
     // For student detail fields, make them read-only if auto-populated
-    const isStudentDetailField = ['studentname', 'student_name', 'email', 'degree', 'mobile'].includes(field.name.toLowerCase());
+    const isStudentDetailField = ['email', 'degree', 'mobile'].includes(field.name.toLowerCase());
     const isAutoPopulated = selectedStudent && isStudentDetailField;
 
     if (field.foreign) {
@@ -303,7 +324,7 @@ const CreateAllotment = () => {
             onClick={() => !isAutoPopulated && toggleDropdown(field.name)}
           />
           {!isAutoPopulated && (
-            <div className={`${styles.dropdownMenu} ${openDropdowns[field.name] ? styles.show : ''}`}>
+            <div className={`${styles.dropdownMenu} ${false ? styles.show : ''}`}>
               <input
                 type="text"
                 className={styles.dropdownSearch}
@@ -443,7 +464,7 @@ const CreateAllotment = () => {
                   type="button"
                   onClick={() => handleRollNumberSelect(student)}
                 >
-                  {student.rollnumber || student.roll_number} - {student.studentname || student.student_name || student.name}
+                  {student.rollnumber || student.roll_number} - {student.name}
                 </button>
               ))
             ) : (
@@ -460,6 +481,10 @@ const CreateAllotment = () => {
       <div className={styles.formContainer}>
         {/* Left Column - Student Details (Auto-populated) */}
         <div className={styles.leftColumn}>
+          {/* Render student name explicitly */}
+          {renderName()}
+          
+          {/* Render other left fields */}
           {leftFields.map((field, index) => renderField(field, index))}
         </div>
 
