@@ -20,9 +20,22 @@ const CreateAllotment = () => {
   const [studentData, setStudentData] = useState<any[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [rollNumberDropdownOpen, setRollNumberDropdownOpen] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  
   const regex = /^(g_|archived|extra_data)/;
   const apiUrl = apiConfig.getResourceUrl("allotment")
   const metadataUrl = apiConfig.getResourceMetaDataUrl("Allotment")
+
+  // Check for mobile screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Fetch metadata
   useEffect(() => {
@@ -389,7 +402,7 @@ const CreateAllotment = () => {
               value={dataToSave[field.name] || ''}
               onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
               className={`${styles.formInput} ${styles.formTextarea} ${isAutoPopulated ? styles.autoPopulated : ''}`}
-              rows={4}
+              rows={isMobile ? 3 : 4}
               readOnly={isAutoPopulated}
             />
           </div>
@@ -479,7 +492,7 @@ const CreateAllotment = () => {
 
       {/* Form Container */}
       <div className={styles.formContainer}>
-        {/* Left Column - Student Details (Auto-populated) */}
+        {/* Left Column - Student Details (Auto-populated) or Single column on mobile */}
         <div className={styles.leftColumn}>
           {/* Render student name explicitly */}
           {renderName()}
@@ -488,7 +501,7 @@ const CreateAllotment = () => {
           {leftFields.map((field, index) => renderField(field, index))}
         </div>
 
-        {/* Right Column - Other Allotment Fields */}
+        {/* Right Column - Other Allotment Fields (Hidden on mobile, fields moved to left column) */}
         <div className={styles.rightColumn}>
           {rightFields.map((field, index) => renderField(field, index))}
         </div>

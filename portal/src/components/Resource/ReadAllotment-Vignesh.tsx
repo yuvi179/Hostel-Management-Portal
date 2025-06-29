@@ -91,24 +91,35 @@ const ReadAllotment = () => {
       height: '100vh',
       width: '100%',
       backgroundColor: '#F8FAFC',
-      padding: 0,
+      padding: '0',
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif",
       boxSizing: 'border-box' as const,
+      '@media (max-width: 768px)': {
+        padding: '8px',
+      },
     },
     dataGridContainer: {
       height: '100%',
       background: 'white',
-      borderRadius: 0,
+      borderRadius: '0',
       boxShadow: 'none',
       overflow: 'hidden',
       border: 'none',
       display: 'flex',
       flexDirection: 'column' as const,
+      '@media (max-width: 768px)': {
+        borderRadius: '8px',
+        height: 'calc(100vh - 16px)',
+      },
     },
     customTableContainer: {
       flex: 1,
       overflow: 'auto',
       background: 'white',
+      '@media (max-width: 768px)': {
+        overflowX: 'auto',
+        overflowY: 'auto',
+      },
     },
     customTable: {
       width: '100%',
@@ -116,6 +127,14 @@ const ReadAllotment = () => {
       fontFamily: "'Inter', sans-serif",
       fontSize: '13px',
       color: '#334155',
+      minWidth: '600px',
+      '@media (max-width: 768px)': {
+        fontSize: '12px',
+        minWidth: '100%',
+      },
+      '@media (max-width: 480px)': {
+        fontSize: '11px',
+      },
     },
     tableHeader: {
       backgroundColor: '#E1F5FE',
@@ -135,6 +154,14 @@ const ReadAllotment = () => {
       letterSpacing: 0,
       whiteSpace: 'nowrap' as const,
       backgroundColor: '#E1F5FE',
+      '@media (max-width: 768px)': {
+        padding: '12px 8px',
+        fontSize: '12px',
+      },
+      '@media (max-width: 480px)': {
+        padding: '10px 6px',
+        fontSize: '11px',
+      },
     },
     tableRow: {
       borderBottom: '1px solid #F1F5F9',
@@ -148,6 +175,16 @@ const ReadAllotment = () => {
       lineHeight: 1.4,
       verticalAlign: 'middle' as const,
       backgroundColor: 'white',
+      wordBreak: 'break-word' as const,
+      '@media (max-width: 768px)': {
+        padding: '10px 8px',
+        fontSize: '12px',
+      },
+      '@media (max-width: 480px)': {
+        padding: '8px 6px',
+        fontSize: '11px',
+        lineHeight: 1.3,
+      },
     },
     noDataMessage: {
       display: 'flex',
@@ -158,22 +195,55 @@ const ReadAllotment = () => {
       color: '#6B7280',
       background: 'white',
       margin: '20px',
+      '@media (max-width: 768px)': {
+        margin: '10px',
+        height: '300px',
+      },
+      '@media (max-width: 480px)': {
+        margin: '5px',
+        height: '250px',
+      },
     },
     noDataIcon: {
       fontSize: '48px',
       marginBottom: '16px',
       opacity: 0.6,
+      '@media (max-width: 768px)': {
+        fontSize: '36px',
+        marginBottom: '12px',
+      },
+      '@media (max-width: 480px)': {
+        fontSize: '32px',
+        marginBottom: '10px',
+      },
     },
     noDataTitle: {
       fontSize: '18px',
       fontWeight: 600,
       color: '#374151',
       margin: '0 0 8px 0',
+      textAlign: 'center' as const,
+      '@media (max-width: 768px)': {
+        fontSize: '16px',
+      },
+      '@media (max-width: 480px)': {
+        fontSize: '14px',
+      },
     },
     noDataText: {
       fontSize: '14px',
       color: '#6B7280',
       margin: 0,
+      textAlign: 'center' as const,
+      paddingX: '20px',
+      '@media (max-width: 768px)': {
+        fontSize: '13px',
+        paddingX: '16px',
+      },
+      '@media (max-width: 480px)': {
+        fontSize: '12px',
+        paddingX: '12px',
+      },
     },
     toastOverlay: {
       position: 'fixed' as const,
@@ -187,6 +257,13 @@ const ReadAllotment = () => {
       justifyContent: 'flex-end',
       padding: '24px',
       pointerEvents: 'none' as const,
+      '@media (max-width: 768px)': {
+        padding: '16px',
+        justifyContent: 'center',
+      },
+      '@media (max-width: 480px)': {
+        padding: '12px',
+      },
     },
     customToast: {
       minWidth: '300px',
@@ -196,6 +273,14 @@ const ReadAllotment = () => {
       boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
       pointerEvents: 'auto' as const,
       borderLeft: '4px solid #10B981',
+      '@media (max-width: 768px)': {
+        minWidth: '280px',
+        maxWidth: '90vw',
+      },
+      '@media (max-width: 480px)': {
+        minWidth: '260px',
+        maxWidth: '95vw',
+      },
     },
     toastHeader: {
       display: 'flex',
@@ -205,6 +290,10 @@ const ReadAllotment = () => {
       fontWeight: 600,
       fontSize: '14px',
       color: '#374151',
+      '@media (max-width: 480px)': {
+        padding: '10px 12px 6px',
+        fontSize: '13px',
+      },
     },
     toastClose: {
       background: 'none',
@@ -218,11 +307,20 @@ const ReadAllotment = () => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      '@media (max-width: 480px)': {
+        fontSize: '16px',
+        width: '18px',
+        height: '18px',
+      },
     },
     toastBody: {
       padding: '0 16px 12px',
       fontSize: '13px',
       color: '#6B7280',
+      '@media (max-width: 480px)': {
+        padding: '0 12px 10px',
+        fontSize: '12px',
+      },
     },
   };
 
