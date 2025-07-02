@@ -27,7 +27,7 @@ export default function Page9() {
 
   return (
     <>
-      <div className={styles.page7Container}>
+      <div className={styles.pageContainer}>
         {/* Menu Toggle Button */}
         <button 
           className={`${styles.menuToggleBtn} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}

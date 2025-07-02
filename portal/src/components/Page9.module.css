@@ -1,37 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;500;600;700&display=swap');
 
+/* Base responsive units and viewport settings */
+:root {
+  --sidebar-width: min(280px, 25vw);
+  --sidebar-collapsed-width: 0px;
+  --content-padding: clamp(15px, 3vw, 30px);
+  --border-radius: clamp(8px, 1vw, 12px);
+  --font-size-base: clamp(13px, 1.2vw, 14px);
+  --font-size-title: clamp(20px, 2.5vw, 25px);
+}
+
 /* Page7 specific styles - scoped with CSS Modules */
-.page7Container {
+.pageContainer {
   background: #ffffff;
   display: flex;
-  height: 100vh;
   min-height: 100vh;
+  height: 100vh;
   overflow: hidden;
   position: relative;
   font-family: 'Poppins', sans-serif;
+  width: 100%;
 }
-
-.page7Container::after {
+.pageContainer::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 250px;
-  background: linear-gradient(135deg, #00BCD4 0%, #03A9F4 100%);
-  border-radius: 0 0 50% 50%;
-  transform: scaleX(1.2) translateY(-20px);
+  height: clamp(180px, 25vh, 250px);
+  background-image: url('/src/images/Background.png');
+  background-size: 100% 100%; /* This stretches the image to fit exactly */
+  background-position: center;
+  background-repeat: no-repeat;
   z-index: 0;
 }
 
-/* Menu Toggle Button - Circular and positioned on sidebar edge */
+/* Menu Toggle Button - Responsive positioning */
 .menuToggleBtn {
   position: fixed;
-  top: 20px;
-  left: 260px;
-  width: 40px;
-  height: 40px;
+  top: clamp(15px, 2vh, 20px);
+  left: var(--sidebar-width);
+  width: clamp(35px, 4vw, 40px);
+  height: clamp(35px, 4vw, 40px);
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(0, 188, 212, 0.2);
   border-radius: 50%;
@@ -43,18 +54,20 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateX(-50%);
 }
 
 .menuToggleBtn:hover {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  transform: scale(1.05);
+  transform: translateX(-50%) scale(1.05);
 }
 
 .menuToggleBtn.sidebarCollapsed {
-  left: 15px;
+  left: clamp(15px, 3vw, 25px);
   background: rgba(0, 188, 212, 0.95);
   border-color: rgba(0, 188, 212, 0.3);
+  transform: none;
 }
 
 .menuToggleBtn.sidebarCollapsed:hover {
@@ -62,18 +75,18 @@
   transform: scale(1.05);
 }
 
-/* Hamburger Icon */
+/* Hamburger Icon - Responsive sizing */
 .hamburgerIcon {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  width: 16px;
-  height: 12px;
+  gap: clamp(2px, 0.3vw, 3px);
+  width: clamp(14px, 1.5vw, 16px);
+  height: clamp(10px, 1.2vw, 12px);
 }
 
 .hamburgerLine {
   width: 100%;
-  height: 2px;
+  height: clamp(1.5px, 0.2vw, 2px);
   background-color: #00BCD4;
   border-radius: 1px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -83,9 +96,9 @@
   background-color: white;
 }
 
-/* Sidebar Styles */
+/* Sidebar - Fully responsive */
 .sidebar {
-  width: 280px;
+  width: var(--sidebar-width);
   height: 100vh;
   min-height: 100vh;
   flex-shrink: 0;
@@ -100,19 +113,21 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
 }
+
 hr, .border-line, .divider {
-  display: none; /* Hide extra lines */
+  display: none;
 }
+
 .sidebar.collapsed {
-  width: 0;
+  width: var(--sidebar-collapsed-width);
   min-width: 0;
   overflow: hidden;
   box-shadow: none;
 }
 
-/* Logo Section Styles */
+/* Logo Section - Responsive */
 .logoSection {
-  padding: 30px 20px 25px 20px;
+  padding: clamp(20px, 3vh, 30px) clamp(15px, 2vw, 20px) clamp(15px, 2.5vh, 25px) clamp(15px, 2vw, 20px);
   border-bottom: 1px solid rgba(229, 229, 229, 0.3);
   text-align: center;
   background: transparent;
@@ -121,41 +136,41 @@ hr, .border-line, .divider {
 }
 
 .sidebar.collapsed .logoSection {
-  padding: 25px 20px;
+  padding: clamp(15px, 2.5vh, 25px) clamp(15px, 2vw, 20px);
   opacity: 0;
 }
 
 .logoCircle {
-  width: 70px;
-  height: 70px;
+  width: clamp(50px, 6vw, 70px);
+  height: clamp(50px, 6vw, 70px);
   background: rgba(255, 255, 255, 0.9);
   border: 2px solid rgba(224, 224, 224, 0.5);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 15px auto;
+  margin: 0 auto clamp(10px, 1.5vh, 15px) auto;
   backdrop-filter: blur(5px);
 }
 
 .logoText {
   color: #666666;
   font-weight: 600;
-  font-size: 14px;
+  font-size: clamp(12px, 1.2vw, 14px);
   letter-spacing: 0.5px;
 }
 
 .instituteName {
-  font-size: 12px;
+  font-size: clamp(10px, 1vw, 12px);
   color: #666666;
   line-height: 1.3;
   font-weight: 400;
   text-align: center;
 }
 
-/* Navigation Menu Styles */
+/* Navigation Menu - Responsive */
 .navMenu {
-  padding: 15px 0;
+  padding: clamp(10px, 1.5vh, 15px) 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -169,14 +184,14 @@ hr, .border-line, .divider {
 
 .navItem {
   width: 100%;
-  padding: 12px 20px;
+  padding: clamp(8px, 1.2vh, 12px) clamp(15px, 2vw, 20px);
   border: none;
   background: none;
   display: flex;
   align-items: center;
   text-align: left;
   color: #555555;
-  font-size: 14px;
+  font-size: var(--font-size-base);
   font-weight: 500;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -189,9 +204,9 @@ hr, .border-line, .divider {
 }
 
 .navIcon {
-  margin-right: 12px;
-  font-size: 16px;
-  width: 18px;
+  margin-right: clamp(8px, 1.2vw, 12px);
+  font-size: clamp(14px, 1.4vw, 16px);
+  width: clamp(16px, 1.8vw, 18px);
   display: inline-block;
   color: #666666;
 }
@@ -214,7 +229,7 @@ hr, .border-line, .divider {
 
 .dropdownArrow {
   margin-left: auto;
-  font-size: 10px;
+  font-size: clamp(8px, 1vw, 10px);
   color: #888888;
   transition: transform 0.2s ease;
   font-weight: normal;
@@ -224,7 +239,7 @@ hr, .border-line, .divider {
   transform: rotate(180deg);
 }
 
-/* Submenu Styles */
+/* Submenu - Responsive */
 .navSubmenu {
   background-color: transparent;
   display: none;
@@ -239,11 +254,11 @@ hr, .border-line, .divider {
 }
 
 .navSubitem {
-  padding: 8px 20px 8px 40px;
+  padding: clamp(6px, 0.8vh, 8px) clamp(15px, 2vw, 20px) clamp(6px, 0.8vh, 8px) clamp(30px, 4vw, 40px);
   display: flex;
   align-items: center;
   color: #666666;
-  font-size: 13px;
+  font-size: clamp(11px, 1.1vw, 13px);
   font-weight: 400;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -260,25 +275,25 @@ hr, .border-line, .divider {
   color: #1976D2;
   font-weight: 500;
   border-radius: 0 25px 25px 0;
-  margin-right: 15px;
+  margin-right: clamp(10px, 1.5vw, 15px);
   backdrop-filter: blur(5px);
 }
 
 .navConnector {
-  margin-right: 8px;
+  margin-right: clamp(6px, 0.8vw, 8px);
   color: #CCCCCC;
-  font-size: 12px;
+  font-size: clamp(10px, 1vw, 12px);
   font-weight: normal;
   position: absolute;
-  left: 25px;
+  left: clamp(20px, 2.5vw, 25px);
 }
 
 .navSubtext {
   flex: 1;
-  margin-left: 15px;
+  margin-left: clamp(12px, 1.5vw, 15px);
 }
 
-/* Main Content Area */
+/* Main Content Area - Fully responsive */
 .mainContent {
   background: transparent;
   height: 100vh;
@@ -286,6 +301,7 @@ hr, .border-line, .divider {
   flex: 1;
   z-index: 1;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 .mainContent.sidebarCollapsed {
@@ -296,25 +312,25 @@ hr, .border-line, .divider {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 var(--content-padding);
   transition: all 0.3s ease;
 }
 
 .mainContent.sidebarCollapsed .contentHeader {
-  padding-left: 30px;
+  padding-left: var(--content-padding);
 }
 
 .pageTitle {
   color: #FFFFFF !important;
   font-family: 'Kumbh Sans', sans-serif !important;
-  font-size: 25px !important;
+  font-size: var(--font-size-title) !important;
   font-weight: 500 !important;
   line-height: 100% !important;
   letter-spacing: 0% !important;
-  padding: 20px 0;
+  padding: clamp(15px, 2vh, 20px) 0;
   margin-bottom: 2px;
-  margin-top: 25px;
-  margin-left:55px;
+  margin-top: clamp(20px, 2.5vh, 25px);
+  margin-left: clamp(20px, 5vw, 55px);
 }
 
 .userProfile {
@@ -323,8 +339,8 @@ hr, .border-line, .divider {
 }
 
 .profileCircle {
-  width: 40px;
-  height: 40px;
+  width: clamp(35px, 4vw, 40px);
+  height: clamp(35px, 4vw, 40px);
   background: linear-gradient(45deg, #FF6B9D, #C44BC4);
   border-radius: 50%;
   display: flex;
@@ -336,15 +352,15 @@ hr, .border-line, .divider {
 
 .profileInitial {
   color: white;
-  font-size: 18px;
+  font-size: clamp(16px, 1.8vw, 18px);
   font-weight: 500;
 }
 
 .contentBody {
-  width: 90%;
-  height: 85vh;
-  max-height: 900px;
-  border-radius: 12px;
+  width: clamp(85%, 90%, 95%);
+  height: clamp(75vh, 85vh, 90vh);
+  max-height: none;
+  border-radius: var(--border-radius);
   margin: 0 auto;
   background: rgba(255, 255, 255, 1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -361,19 +377,18 @@ hr, .border-line, .divider {
 }
 
 .bulkUploadSection {
-  padding: 20px;
-
+  padding: clamp(15px, 2vh, 20px);
   display: flex;
   justify-content: flex-end;
-  padding-right: 46px;
+  padding-right: clamp(25px, 4vw, 46px);
 }
 
 .bulkUploadBtn {
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: clamp(6px, 0.8vw, 8px);
+  font-size: clamp(12px, 1.1vw, 13px);
   background: #00BCD4;
   border: none;
-  padding: 10px 20px;
+  padding: clamp(8px, 1vh, 10px) clamp(15px, 2vw, 20px);
   font-weight: 500;
   color: white;
   transition: all 0.2s ease;
@@ -385,15 +400,15 @@ hr, .border-line, .divider {
 }
 
 .createStudentSection {
-  padding: 20px;
+  padding: clamp(15px, 2vh, 20px);
   border: none;
   border-bottom: 1px solid rgba(240, 240, 240, 0.5);
-  margin-bottom: 110px;
+  margin-bottom: clamp(60px, 10vh, 110px);
 }
 
 .searchSection {
-  padding: 0 20px;
-  margin: 15px 0;
+  padding: 0 clamp(15px, 2vh, 20px);
+  margin: clamp(10px, 1.5vh, 15px) 0;
   gap: 0px;
   display: flex;
   align-items: center;
@@ -403,13 +418,13 @@ hr, .border-line, .divider {
 .searchInput {
   border: 1px solid #D1D5DB;
   border-right: none;
-  border-radius: 8px 0 0 8px;
-  height: 42px;
-  padding: 0 16px;
-  font-size: 14px;
+  border-radius: clamp(6px, 0.8vw, 8px) 0 0 clamp(6px, 0.8vw, 8px);
+  height: clamp(38px, 4.2vh, 42px);
+  padding: 0 clamp(12px, 1.6vw, 16px);
+  font-size: var(--font-size-base);
   flex-grow: 0;
-  width: 300px;
-  min-width: 300px;
+  width: clamp(200px, 30vw, 300px);
+  min-width: clamp(200px, 25vw, 300px);
   font-family: 'Poppins', sans-serif;
   background: #FFFFFF;
   color: #374151;
@@ -432,11 +447,11 @@ hr, .border-line, .divider {
   color: white;
   border: 1px solid #2196F3;
   border-left: 1px solid #2196F3;
-  border-radius: 0 8px 8px 0;
-  height: 42px;
-  width: 50px;
+  border-radius: 0 clamp(6px, 0.8vw, 8px) clamp(6px, 0.8vw, 8px) 0;
+  height: clamp(38px, 4.2vh, 42px);
+  width: clamp(45px, 5vw, 50px);
   padding: 0;
-  font-size: 16px;
+  font-size: clamp(14px, 1.6vw, 16px);
   font-weight: 400;
   margin: 0;
   transition: all 0.2s ease;
@@ -455,13 +470,13 @@ hr, .border-line, .divider {
   background: #2196F3;
   color: white;
   border: 1px solid #2196F3;
-  border-radius: 8px;
-  height: 42px;
-  width: 50px;
+  border-radius: clamp(6px, 0.8vw, 8px);
+  height: clamp(38px, 4.2vh, 42px);
+  width: clamp(45px, 5vw, 50px);
   padding: 0;
-  font-size: 16px;
+  font-size: clamp(14px, 1.6vw, 16px);
   font-weight: 400;
-  margin: 0 0 0 8px;
+  margin: 0 0 0 clamp(6px, 0.8vw, 8px);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -475,34 +490,323 @@ hr, .border-line, .divider {
 }
 
 .readStudentSection {
-  padding: 20px;
+  padding: clamp(15px, 2vh, 20px);
   border: none;
   padding-top: 0;
-  margin-top: 40px;
+  margin-top: clamp(30px, 4vh, 40px);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .menuToggleBtn {
-    left: 250px;
-    width: 35px;
-    height: 35px;
+/* Table and Data Display Styles - Responsive */
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: clamp(6px, 0.8vw, 8px);
+  border: 1px solid rgba(224, 224, 224, 0.5);
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  margin-top: clamp(15px, 2vh, 20px);
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Poppins', sans-serif;
+  font-size: var(--font-size-base);
+  background: white;
+}
+
+.tableHeader {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 2px solid rgba(224, 224, 224, 0.8);
+}
+
+.tableHeaderRow {
+  border-bottom: 1px solid rgba(224, 224, 224, 0.5);
+}
+
+.tableHeaderCell {
+  padding: clamp(12px, 1.5vh, 16px) clamp(10px, 1.2vw, 12px);
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: clamp(12px, 1.1vw, 13px);
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  border-right: 1px solid rgba(224, 224, 224, 0.3);
+  position: relative;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.tableHeaderCell:last-child {
+  border-right: none;
+}
+
+.tableHeaderCell::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(59, 130, 246, 0.3) 50%, transparent 100%);
+}
+
+.tableBody {
+  background: white;
+}
+
+.tableRow {
+  border-bottom: 1px solid rgba(240, 240, 240, 0.8);
+  transition: all 0.2s ease;
+}
+
+.tableRow:hover {
+  background-color: rgba(59, 130, 246, 0.02);
+  transform: translateX(2px);
+  box-shadow: inset 3px 0 0 rgba(59, 130, 246, 0.2);
+}
+
+.tableRow:nth-child(even) {
+  background-color: rgba(248, 249, 250, 0.3);
+}
+
+.tableRow:nth-child(even):hover {
+  background-color: rgba(59, 130, 246, 0.03);
+}
+
+.tableCell {
+  padding: clamp(10px, 1.2vh, 14px) clamp(10px, 1.2vw, 12px);
+  color: #374151;
+  font-size: var(--font-size-base);
+  font-weight: 400;
+  border-right: 1px solid rgba(240, 240, 240, 0.5);
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+.tableCell:last-child {
+  border-right: none;
+}
+
+/* Action buttons in table cells */
+.actionBtn {
+  padding: clamp(4px, 0.5vh, 6px) clamp(8px, 1vw, 12px);
+  margin: 0 clamp(2px, 0.3vw, 4px);
+  border: none;
+  border-radius: clamp(4px, 0.5vw, 6px);
+  font-size: clamp(11px, 1vw, 12px);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: clamp(60px, 8vw, 80px);
+}
+
+.editBtn {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);
+}
+
+.editBtn:hover {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(34, 197, 94, 0.3);
+}
+
+.deleteBtn {
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+.deleteBtn:hover {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+.viewBtn {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.viewBtn:hover {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Status indicators */
+.statusBadge {
+  padding: clamp(3px, 0.4vh, 5px) clamp(8px, 1vw, 10px);
+  border-radius: clamp(12px, 1.5vw, 16px);
+  font-size: clamp(10px, 0.9vw, 11px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  display: inline-block;
+  min-width: clamp(50px, 7vw, 70px);
+  text-align: center;
+}
+
+.statusActive {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.statusInactive {
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.statusPending {
+  background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: clamp(40px, 8vh, 60px) clamp(20px, 3vw, 30px);
+  color: #6b7280;
+}
+
+.emptyStateIcon {
+  font-size: clamp(40px, 5vw, 48px);
+  color: #d1d5db;
+  margin-bottom: clamp(15px, 2vh, 20px);
+}
+
+.emptyStateText {
+  font-size: clamp(14px, 1.4vw, 16px);
+  font-weight: 500;
+  margin-bottom: clamp(8px, 1vh, 10px);
+}
+
+.emptyStateSubtext {
+  font-size: clamp(12px, 1.2vw, 14px);
+  color: #9ca3af;
+}
+
+/* Loading states */
+.loadingSpinner {
+  display: inline-block;
+  width: clamp(16px, 2vw, 20px);
+  height: clamp(16px, 2vw, 20px);
+  border: 2px solid #f3f4f6;
+  border-radius: 50%;
+  border-top-color: #3b82f6;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loadingRow {
+  text-align: center;
+  padding: clamp(20px, 3vh, 30px);
+  color: #6b7280;
+}
+
+/* Responsive Design - Comprehensive breakpoints */
+@media (max-width: 1200px) {
+  :root {
+    --sidebar-width: min(260px, 28vw);
+    --content-padding: clamp(12px, 2.5vw, 25px);
   }
   
-  .menuToggleBtn.sidebarCollapsed {
-    left: 10px;
+  .pageTitle {
+    margin-left: clamp(15px, 4vw, 40px) !important;
   }
-  
-  .mainContent.sidebarCollapsed .contentHeader {
-    padding-left: 30px;
+
+  .tableHeaderCell {
+    font-size: clamp(11px, 1vw, 12px);
+    padding: clamp(10px, 1.2vh, 14px) clamp(8px, 1vw, 10px);
   }
-  
-  .contentBody {
-    width: 95%;
+
+  .tableCell {
+    padding: clamp(8px, 1vh, 12px) clamp(8px, 1vw, 10px);
+  }
+}
+
+@media (max-width: 992px) {
+  :root {
+    --sidebar-width: min(240px, 30vw);
+    --content-padding: clamp(10px, 2vw, 20px);
   }
   
   .searchInput {
-    width: 250px;
-    min-width: 250px;
+    width: clamp(180px, 35vw, 250px);
+    min-width: clamp(180px, 30vw, 250px);
+  }
+  
+  .bulkUploadSection {
+    padding-right: clamp(20px, 3vw, 35px);
+  }
+
+  .tableContainer {
+    overflow-x: scroll;
+  }
+
+  .actionBtn {
+    min-width: clamp(50px, 7vw, 70px);
+    font-size: clamp(10px, 0.9vw, 11px);
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .contentBody {
+    height: clamp(80vh, 90vh, 95vh);
+  }
+  
+  .pageTitle {
+    margin-top: clamp(10px, 1.5vh, 15px);
+    margin-bottom: 0;
+  }
+  
+  .logoSection {
+    padding: clamp(10px, 2vh, 20px) clamp(15px, 2vw, 20px) clamp(8px, 1.5vh, 15px) clamp(15px, 2vw, 20px);
+  }
+  
+  .createStudentSection {
+    margin-bottom: clamp(30px, 5vh, 60px);
+  }
+}
+
+
+
+/* Print styles */
+@media print {
+  .sidebar {
+    display: none;
+  }
+  
+  .menuToggleBtn {
+    display: none;
+  }
+  
+  .mainContent {
+    width: 100%;
+    margin: 0;
+  }
+  
+  .pageContainer::after {
+    display: none;
+  }
+  
+  .contentBody {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    height: auto;
+    overflow: visible;
   }
 }

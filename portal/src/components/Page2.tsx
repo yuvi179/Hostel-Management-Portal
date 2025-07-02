@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from "./page7.module.css";
+import styles from "./Page2.module.css";
 import { useNavigate } from 'react-router-dom';
 
 import CreateStudent from './Resource/CreateStudent-chandrahas';
@@ -28,7 +28,7 @@ export default function Page2() {
 
   return (
     <>
-      <div className={styles.page7Container}>
+      <div className={styles.pageContainer}>
         {/* Menu Toggle Button */}
         <button 
           className={`${styles.menuToggleBtn} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}
