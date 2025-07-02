@@ -45,7 +45,6 @@ export default function Page9() {
           {/* Logo Section */}
           <div className={styles.logoSection}>
             <div className={styles.logoCircle}>
-              <span className={styles.logoText}>iiitb</span>
             </div>
             <div className={styles.instituteName}>
               International Institute of<br />

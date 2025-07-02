@@ -231,16 +231,18 @@
 }
 
 .logoCircle {
-  width: 70px;
-  height: 70px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 2px solid rgba(224, 224, 224, 0.5);
+  width: clamp(50px, 6vw, 70px);
+  height: clamp(50px, 6vw, 70px);
+  background-image: url('/src/images/IIITB_logo1.png');
+  background-size: 70%;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid black;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 15px auto;
-  backdrop-filter: blur(5px);
+  margin: 0 auto clamp(10px, 1.5vh, 15px) auto;
 }
 
 .logoText {
