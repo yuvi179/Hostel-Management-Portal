@@ -12,6 +12,23 @@ export default function Page7() {
     reports: false
   });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle responsive behavior
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      // Auto-collapse sidebar on mobile
+      if (mobile) {
+        setSidebarCollapsed(true);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleDropdown = (dropdownName: keyof typeof expandedDropdowns) => {
     setExpandedDropdowns(prev => ({
@@ -40,6 +57,7 @@ export default function Page7() {
           </div>
         </button>
 
+        {/* Sidebar */}
         <div className={`${styles.sidebar} ${sidebarCollapsed ? styles.collapsed : ''}`}>
           {/* Logo Section */}
           <div className={styles.logoSection}>
@@ -60,17 +78,20 @@ export default function Page7() {
               <span className={styles.navText}>Dashboard</span>
             </button>
             
-            <button className={styles.navItem}>
+            <button className={styles.navItem}
+            onClick={() => navigate('/page2')}>
               <span className={styles.navIcon}>⌂</span>
               <span className={styles.navText}>Room Allotment</span>
             </button>
             
-            <button className={styles.navItem}>
+            <button className={styles.navItem}
+            onClick={() => navigate('/page4')}>
               <span className={styles.navIcon}>⤋</span>
               <span className={styles.navText}>Check In</span>
             </button>
             
-            <button className={styles.navItem}>
+            <button className={styles.navItem}
+            onClick={() => navigate('/page5')}>
               <span className={styles.navIcon}>⤴</span>
               <span className={styles.navText}>Check out</span>
             </button>
@@ -119,6 +140,7 @@ export default function Page7() {
           </div>
         </div>
 
+        {/* Main Content */}
         <div className={`${styles.mainContent} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
           <div className={styles.contentHeader}>
             <div className={styles.pageTitle}>Add Resident Data</div>
