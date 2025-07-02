@@ -159,7 +159,7 @@ export default function Page7() {
             </div>
             <div className={styles.searchSection}>
               <input className={styles.searchInput} placeholder="Search" />
-              <button className={styles.searchBtn}>🔍︎</button>
+              <button className={styles.searchBtn}>🔍</button>
               <button className={styles.refreshBtn}>⟳</button>
             </div>
             <div className={styles.readStudentSection}>

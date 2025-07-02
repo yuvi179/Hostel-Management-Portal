@@ -131,9 +131,9 @@ export default function Page2() {
             </div>
           </div>
           <div className={styles.contentBody}>
-            <div className={styles.bulkUploadSection}>
+            {/* <div className={styles.bulkUploadSection}>
               <button className={styles.bulkUploadBtn}>Bulk Upload</button>
-            </div>
+            </div> */}
             <div className={styles.createStudentSection}>
               <CreateAllotment />
             </div>

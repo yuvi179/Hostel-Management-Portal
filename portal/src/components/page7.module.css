@@ -22,7 +22,6 @@
   font-family: 'Poppins', sans-serif;
   width: 100%;
 }
-
 .page7Container::after {
   content: '';
   position: absolute;
@@ -36,7 +35,6 @@
   background-repeat: no-repeat;
   z-index: 0;
 }
-
 
 /* Menu Toggle Button - Responsive positioning */
 .menuToggleBtn {
