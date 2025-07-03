@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from "./page7.module.css";
 import { useNavigate } from 'react-router-dom';
+import * as XLSX from 'xlsx';
+import apiConfig from '../config/apiConfig';
 
 import CreateStudent from './Resource/CreateStudent-chandrahas';
 import ReadStudent from './Resource/ReadStudent';
@@ -12,23 +14,9 @@ export default function Page7() {
     reports: false
   });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Handle responsive behavior
-  useEffect(() => {
-    const handleResize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      // Auto-collapse sidebar on mobile
-      if (mobile) {
-        setSidebarCollapsed(true);
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const apiUrl = apiConfig.getResourceUrl("student");
 
   const toggleDropdown = (dropdownName: keyof typeof expandedDropdowns) => {
     setExpandedDropdowns(prev => ({
@@ -41,10 +29,72 @@ export default function Page7() {
     setSidebarCollapsed(prev => !prev);
   };
 
+  const handleBulkUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json<(string | number)[]>(worksheet, { header: 1 });
+
+      const [headers, ...rows] = jsonData;
+
+      if (
+        headers[0] !== 'Roll Number' ||
+        headers[1] !== 'Name' ||
+        headers[2] !== 'Degree' ||
+        headers[3] !== 'Email' ||
+        headers[4] !== 'Mobile' ||
+        headers[5] !== 'Remarks'
+      ) {
+        alert('Excel format incorrect. Headers must be: Roll Number, Name, Degree, Email, Mobile, Remarks');
+        return;
+      }
+
+      for (const row of rows) {
+        if (row.length < 5) continue;
+
+        const dataToSave = {
+          rollnumber: row[0],
+          name: row[1],
+          degree: row[2],
+          email: row[3],
+          mobile: row[4],
+          remarks: row[5]
+        };
+
+        const params = new URLSearchParams();
+        const jsonString = JSON.stringify(dataToSave);
+        const base64Encoded = btoa(jsonString);
+        params.append('resource', base64Encoded);
+        const ssid: any = sessionStorage.getItem('key');
+        params.append('session_id', ssid);
+
+        await fetch(apiUrl + `?` + params.toString(), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        });
+      }
+
+      alert('Bulk upload completed!');
+    } catch (err) {
+      console.error('Error during bulk upload:', err);
+      alert('An error occurred during upload. Check console for details.');
+    }
+  };
+
   return (
     <>
       <div className={styles.page7Container}>
-        {/* Menu Toggle Button */}
         <button 
           className={`${styles.menuToggleBtn} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}
           onClick={toggleSidebar}
@@ -57,12 +107,9 @@ export default function Page7() {
           </div>
         </button>
 
-        {/* Sidebar */}
         <div className={`${styles.sidebar} ${sidebarCollapsed ? styles.collapsed : ''}`}>
-          {/* Logo Section */}
           <div className={styles.logoSection}>
-            <div className={styles.logoCircle}>
-            </div>
+            <div className={styles.logoCircle}></div>
             <div className={styles.instituteName}>
               International Institute of<br />
               Information Technology<br />
@@ -70,31 +117,24 @@ export default function Page7() {
             </div>
           </div>
 
-          {/* Navigation Menu */}
           <div className={styles.navMenu}>
             <button className={styles.navItem}>
               <span className={styles.navIcon}>⊞</span>
               <span className={styles.navText}>Dashboard</span>
             </button>
-            
-            <button className={styles.navItem}
-            onClick={() => navigate('/page2')}>
+            <button className={styles.navItem} onClick={() => navigate('/page2')}>
               <span className={styles.navIcon}>⌂</span>
               <span className={styles.navText}>Room Allotment</span>
             </button>
-            
-            <button className={styles.navItem}
-            onClick={() => navigate('/page4')}>
+            <button className={styles.navItem} onClick={() => navigate('/page4')}>
               <span className={styles.navIcon}>⤋</span>
               <span className={styles.navText}>Check In</span>
             </button>
-            
-            <button className={styles.navItem}
-            onClick={() => navigate('/page5')}>
+            <button className={styles.navItem} onClick={() => navigate('/page5')}>
               <span className={styles.navIcon}>⤴</span>
               <span className={styles.navText}>Check out</span>
             </button>
-            
+
             <div className={styles.navSection}>
               <button 
                 className={`${styles.navItem} ${styles.navDropdownHeader} ${expandedDropdowns.viewResident ? styles.expanded : ''}`}
@@ -115,7 +155,7 @@ export default function Page7() {
                 </div>
               </div>
             </div>
-            
+
             <div className={styles.navSection}>
               <button 
                 className={`${styles.navItem} ${styles.navDropdownHeader} ${expandedDropdowns.reports ? styles.expanded : ''}`}
@@ -139,7 +179,6 @@ export default function Page7() {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className={`${styles.mainContent} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
           <div className={styles.contentHeader}>
             <div className={styles.pageTitle}>Add Resident Data</div>
@@ -151,10 +190,17 @@ export default function Page7() {
           </div>
           <div className={styles.contentBody}>
             <div className={styles.bulkUploadSection}>
-              <button className={styles.bulkUploadBtn}>Bulk Upload</button>
+              <button className={styles.bulkUploadBtn} onClick={handleBulkUploadClick}>Bulk Upload</button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                accept=".xlsx, .xls"
+                onChange={handleFileChange}
+              />
             </div>
             <div className={styles.createStudentSection}>
-              <CreateStudent></CreateStudent>
+              <CreateStudent />
             </div>
             <div className={styles.searchSection}>
               <input className={styles.searchInput} placeholder="Search" />
@@ -162,7 +208,7 @@ export default function Page7() {
               <button className={styles.refreshBtn}>⟳</button>
             </div>
             <div className={styles.readStudentSection}>
-              <ReadStudent/>
+              <ReadStudent />
             </div>
           </div>
         </div>

@@ -117,10 +117,11 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 250px;
-  background: linear-gradient(135deg, #00BCD4 0%, #03A9F4 100%);
-  border-radius: 0 0 50% 50%;
-  transform: scaleX(1.2) translateY(-20px);
+  height: clamp(180px, 25vh, 250px);
+  background-image: url('/src/images/Background.png');
+  background-size: 100% 100%; /* This stretches the image to fit exactly */
+  background-position: center;
+  background-repeat: no-repeat;
   z-index: 0;
 }
 

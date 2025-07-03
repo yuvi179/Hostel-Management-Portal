@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from "./Page8.module.css";
 import { useNavigate } from 'react-router-dom';
+import * as XLSX from 'xlsx';
+import apiConfig from '../config/apiConfig';
 
 import CreateRoom from './Resource/CreateRoom';
 import ReadRoom from './Resource/ReadRoom';
@@ -12,6 +14,9 @@ export default function Page8() {
     reports: false
   });
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const apiUrl = apiConfig.getResourceUrl("room");
 
   const toggleDropdown = (dropdownName: keyof typeof expandedDropdowns) => {
     setExpandedDropdowns(prev => ({
@@ -24,10 +29,68 @@ export default function Page8() {
     setSidebarCollapsed(prev => !prev);
   };
 
+  const handleBulkUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data);
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const jsonData = XLSX.utils.sheet_to_json<(string | number)[]>(worksheet, { header: 1 });
+
+      const [headers, ...rows] = jsonData;
+
+      if (
+        headers[0] !== 'Room Number' ||
+        headers[1] !== 'Floor' ||
+        headers[2] !== 'Block' ||
+        headers[3] !== 'Room Type'
+      ) {
+        alert('Excel format incorrect. Headers must be: Room Number, Floor, Block, Room Type');
+        return;
+      }
+
+      for (const row of rows) {
+        if (row.length < 4) continue;
+
+        const dataToSave = {
+          roomnumber: row[0],
+          floor: row[1],
+          block: row[2],
+          roomtype: row[3]
+        };
+
+        const params = new URLSearchParams();
+        const jsonString = JSON.stringify(dataToSave);
+        const base64Encoded = btoa(jsonString);
+        params.append('resource', base64Encoded);
+        const ssid: any = sessionStorage.getItem('key');
+        params.append('session_id', ssid);
+
+        await fetch(apiUrl + `?` + params.toString(), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          }
+        });
+      }
+
+      alert('Bulk upload completed!');
+    } catch (err) {
+      console.error('Error during bulk upload:', err);
+      alert('An error occurred during upload. Check console for details.');
+    }
+  };
+
   return (
     <>
       <div className={`${styles.mainContainer} ${styles.h100} ${styles.w100}`}>
-        {/* Menu Toggle Button */}
         <button 
           className={`${styles.menuToggleBtn} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}
           onClick={toggleSidebar}
@@ -41,10 +104,8 @@ export default function Page8() {
         </button>
 
         <div className={`${styles.sidebar} ${styles.h100} ${sidebarCollapsed ? styles.collapsed : ''}`}>
-          {/* Logo Section */}
           <div className={styles.logoSection}>
-            <div className={styles.logoCircle}>
-            </div>
+            <div className={styles.logoCircle}></div>
             <div className={styles.instituteName}>
               International Institute of<br />
               Information Technology<br />
@@ -52,28 +113,24 @@ export default function Page8() {
             </div>
           </div>
 
-          {/* Navigation Menu */}
           <div className={styles.navMenu}>
             <button className={styles.navItem}>
               <span className={styles.navIcon}>⊞</span>
               <span className={styles.navText}>Dashboard</span>
             </button>
-            
             <button className={styles.navItem}>
               <span className={styles.navIcon}>⌂</span>
               <span className={styles.navText}>Room Allotment</span>
             </button>
-            
             <button className={styles.navItem}>
               <span className={styles.navIcon}>⤋</span>
               <span className={styles.navText}>Check In</span>
             </button>
-            
             <button className={styles.navItem}>
               <span className={styles.navIcon}>⤴</span>
               <span className={styles.navText}>Check out</span>
             </button>
-            
+
             <div className={styles.navSection}>
               <button 
                 className={`${styles.navItem} ${styles.navDropdownHeader} ${expandedDropdowns.viewResident ? styles.expanded : ''}`}
@@ -94,7 +151,7 @@ export default function Page8() {
                 </div>
               </div>
             </div>
-            
+
             <div className={styles.navSection}>
               <button 
                 className={`${styles.navItem} ${styles.navDropdownHeader} ${expandedDropdowns.reports ? styles.expanded : ''}`}
@@ -129,10 +186,22 @@ export default function Page8() {
           </div>
           <div className={styles.contentContainer}>
             <div className={`${styles.bulkUploadSection} ${styles.dFlex} ${styles.justifyContentEnd} ${styles.wAuto}`}>
-              <button className={`${styles.btn} ${styles.btnPrimary} ${styles.floatEnd} ${styles.px4} ${styles.py2} ${styles.fwSemibold} ${styles.mt3} ${styles.me3} ${styles.bulkUploadBtn}`}>Bulk Upload</button>
+              <button 
+                className={`${styles.btn} ${styles.btnPrimary} ${styles.floatEnd} ${styles.px4} ${styles.py2} ${styles.fwSemibold} ${styles.mt3} ${styles.me3} ${styles.bulkUploadBtn}`}
+                onClick={handleBulkUploadClick}
+              >
+                Bulk Upload
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: 'none' }}
+                accept=".xlsx, .xls"
+                onChange={handleFileChange}
+              />
             </div>
             <div className={`${styles.dFlex} ${styles.flexColumn} ${styles.h50} ${styles.createRoomSection}`}>
-              <CreateRoom></CreateRoom>
+              <CreateRoom />
             </div>
             <div className={`${styles.searchSection} ${styles.dFlex} ${styles.justifyContentEnd} ${styles.wAuto}`}>
               <input className={`${styles.formControl} ${styles.searchInput}`} placeholder="Search" />
@@ -140,7 +209,7 @@ export default function Page8() {
               <button className={`${styles.btn} ${styles.btnSuccess} ${styles.refreshBtn}`}>⟳</button>
             </div>
             <div className={`${styles.dFlex} ${styles.flexColumn} ${styles.h50} ${styles.readRoomSection}`}>
-              <ReadRoom/>
+              <ReadRoom />
             </div>
           </div>
         </div>
