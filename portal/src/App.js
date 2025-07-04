@@ -9,6 +9,7 @@ import Page10 from "./components/Page10";
 import Page4 from './components/Page4';
 import Page5 from './components/Page5';
 import Page6 from './components/Page6';
+import Page11 from "./components/Page11";
 
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
@@ -29,6 +30,7 @@ function App() {
       <Route path="/page4" element={<Page4 />} />
       <Route path="/page5" element={<Page5 />} />
       <Route path="/page6" element={<Page6 />} />
+      <Route path="/page11" element={<Page11 />} />
     </Routes>
   );
 }
