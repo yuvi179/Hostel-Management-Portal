@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import apiConfig from '../../config/apiConfig';
-import styles from './CreateRoom.module.css';
+import styles from './CreateOccupancy.module.css';
 
 export type resourceMetaData = {
   resource: string;
@@ -15,32 +15,27 @@ const CreateOccupancy = () => {
   const [foreignkeyData, setForeignkeyData] = useState<Record<string, any[]>>({});
   const [searchQueries, setSearchQueries] = useState<Record<string, string>>({});
   const [enums, setEnums] = useState<Record<string, any[]>>({});
-  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
+  const [dropdownOpen, setDropdownOpen] = useState<Record<string, boolean>>({});
   const regex = /^(g_|archived|extra_data)/;
-  const apiUrl = apiConfig.getResourceUrl("occupancy")
-  const metadataUrl = apiConfig.getResourceMetaDataUrl("Occupancy")
+  const apiUrl = apiConfig.getResourceUrl("occupancy");
+  const metadataUrl = apiConfig.getResourceMetaDataUrl("Occupancy");
 
-  // Fetch metadata
   useEffect(() => {
     const fetchResMetaData = async () => {
       const fetchedResources = new Set();
       const fetchedEnum = new Set();
-      console.log("fectched resources",fetchedResources)
       try {
-        const data = await fetch(
-          metadataUrl,
-          {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+        const data = await fetch(metadataUrl, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
 
         if (data.ok) {
           const metaData = await data.json();
           setResMetaData(metaData);
           setFields(metaData[0].fieldValues);
           const foreignFields = metaData[0].fieldValues.filter((field: any) => field.foreign);
-          console.log("foreign fields",foreignFields)
+
           for (const field of foreignFields) {
             if (!fetchedResources.has(field.foreign)) {
               fetchedResources.add(field.foreign);
@@ -64,22 +59,14 @@ const CreateOccupancy = () => {
     };
 
     fetchResMetaData();
-   
   }, []);
-
-  useEffect(()=>{
-    console.log("data to save",dataToSave)
-  },[dataToSave])
 
   const fetchEnumData = async (enumName: string) => {
     try {
-      const response = await fetch(
-        `${apiConfig.API_BASE_URL}/${enumName}`,
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      const response = await fetch(`${apiConfig.API_BASE_URL}/${enumName}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -93,7 +80,7 @@ const CreateOccupancy = () => {
     } catch (error) {
       console.error(`Error fetching enum data for ${enumName}:`, error);
     }
-  }
+  };
 
   const fetchForeignData = async (foreignResource: string, fieldName: string, foreignField: string) => {
     try {
@@ -102,13 +89,10 @@ const CreateOccupancy = () => {
       params.append('queryId', 'GET_ALL');
       params.append('session_id', ssid);
 
-      const response = await fetch(
-        `${apiConfig.API_BASE_URL}/${foreignResource.toLowerCase()}?`+params.toString(),
-        {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      const response = await fetch(`${apiConfig.API_BASE_URL}/${foreignResource.toLowerCase()}?${params.toString()}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -116,7 +100,6 @@ const CreateOccupancy = () => {
           ...prev,
           [foreignResource]: data.resource
         }));
-        
       } else {
         console.error(`Error fetching foreign data for ${fieldName}:`, response.status);
       }
@@ -132,8 +115,8 @@ const CreateOccupancy = () => {
     params.append('resource', base64Encoded);
     const ssid: any = sessionStorage.getItem('key');
     params.append('session_id', ssid);
-    
-    const response = await fetch(apiUrl+`?`+params.toString(), {
+
+    const response = await fetch(`${apiUrl}?${params.toString()}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -151,15 +134,7 @@ const CreateOccupancy = () => {
     setSearchQueries((prev) => ({ ...prev, [fieldName]: value }));
   };
 
-  const toggleDropdown = (fieldName: string) => {
-    setOpenDropdowns((prev) => ({
-      ...prev,
-      [fieldName]: !prev[fieldName]
-    }));
-  };
-
   const getFieldDisplayName = (fieldName: string, isRequired: boolean = false) => {
-    // Convert field names to match Figma design
     const fieldMappings: Record<string, string> = {
       'floor': 'Floor',
       'block': 'Block',
@@ -168,7 +143,6 @@ const CreateOccupancy = () => {
       'roomtype': 'Room Type',
       'room_type': 'Room Type'
     };
-    
     const displayName = fieldMappings[fieldName.toLowerCase()] || fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
     return isRequired ? `${displayName}*` : displayName;
   };
@@ -183,49 +157,53 @@ const CreateOccupancy = () => {
               const filteredOptions = options.filter((option) =>
                 option[field.foreign_field].toLowerCase().includes((searchQueries[field.name] || '').toLowerCase())
               );
-              
+
               return (
                 <div key={index} className={`${styles.formField} ${styles.dropdownField}`}>
                   <input
                     type="text"
                     className={`${styles.formInput} ${styles.dropdownDisplay}`}
                     placeholder={getFieldDisplayName(field.name, field.required)}
-                    value={dataToSave[field.name] ? 
-                      options.find((item) => item[field.foreign_field] === dataToSave[field.name])?.[field.foreign_field] || '' 
+                    value={dataToSave[field.name]
+                      ? options.find((item) => item[field.name] === dataToSave[field.name])?.[field.name] || ''
                       : ''}
                     readOnly
-                    onClick={() => toggleDropdown(field.foreign)}
+                    onClick={() => {
+                      setDropdownOpen((prev) => ({
+                        ...prev,
+                        [field.name]: !prev[field.name]
+                      }));
+                    }}
                   />
-                  {openDropdowns[field.name] && (
-                    <div className={styles.dropdownMenu} aria-labelledby={`dropdownMenu-${field.name}`}>
-                      <input
-                        type="text"
-                        className={styles.dropdownSearch}
-                        placeholder={`Search ${getFieldDisplayName(field.name)}`}
-                        value={searchQueries[field.name] || ''}
-                        onChange={(e) => handleSearchChange(field.name, e.target.value)}
-                      />
-                      
-                      {filteredOptions.length > 0 ? (
-                        filteredOptions.map((option, i) => (
-                          <button
-                            key={i}
-                            className={styles.dropdownItem}
-                            type="button"
-                            onClick={() => {
-                              setDataToSave({ ...dataToSave, [field.name]: option[field.foreign_field] });
-                              setOpenDropdowns((prev) => ({ ...prev, [field.name]: false }));
-                            }}
-                          >
-                            {option[field.foreign_field]}
-                          </button>
-                        ))
-                      ) : (
-                        <span className={styles.dropdownItemDisabled}>No options available</span>
-                      )}
-                    </div>
-                  )}
-                  
+                  <div className={`${styles.dropdownMenu} ${dropdownOpen[field.name] ? styles.show : ''}`}>
+                    <input
+                      type="text"
+                      className={styles.dropdownSearch}
+                      placeholder={`Search ${getFieldDisplayName(field.name)}`}
+                      value={searchQueries[field.name] || ''}
+                      onChange={(e) => handleSearchChange(field.name, e.target.value)}
+                    />
+                    {filteredOptions.length > 0 ? (
+                      filteredOptions.map((option, i) => (
+                        <button
+                          key={i}
+                          className={styles.dropdownItem}
+                          type="button"
+                          onClick={() => {
+                            setDataToSave({ ...dataToSave, [field.name]: option[field.name] });
+                            setDropdownOpen((prev) => ({
+                              ...prev,
+                              [field.name]: false
+                            }));
+                          }}
+                        >
+                          {option[field.name]}
+                        </button>
+                      ))
+                    ) : (
+                      <span className={styles.dropdownItemDisabled}>No options available</span>
+                    )}
+                  </div>
                 </div>
               );
             } else if (field.isEnum === true) {
@@ -266,7 +244,7 @@ const CreateOccupancy = () => {
           return null;
         })}
       </div>
-      
+
       <div className={styles.formActions2}>
         <button className={styles.submitButton} onClick={handleCreate}>
           Submit

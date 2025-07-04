@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import styles from "./Page11.module.css";
+import styles from "./Page12.module.css";
 import { useNavigate } from 'react-router-dom';
 
-import CreateStudent from './Resource/CreateStudent-chandrahas';
-import ReadStudent from './Resource/ReadStudent';
-import CreateAllotment from './Resource/CreateAllotment-Vignesh';
-import ReadAllotment from './Resource/ReadAllotment-Vignesh';
-import CreateOccupancy from './Resource/CreateOccupancy';
-import ReadOccupancy from './Resource/ReadOccupancy';
+import CreateVacatedlist from './Resource/CreateVacatedlist';
+import ReadVacatedlist from './Resource/ReadVacatedlist';
 
-export default function Page11() {
+export default function Page12() {
   const navigate = useNavigate();
   const [expandedDropdowns, setExpandedDropdowns] = useState({
     viewResident: false,
@@ -136,7 +132,7 @@ export default function Page11() {
               <button className={styles.bulkUploadBtn}>Bulk Upload</button>
             </div> */}
             <div className={styles.createStudentSection}>
-              <CreateOccupancy />
+              <CreateVacatedlist />
             </div>
             <div className={styles.searchSection}>
               <input className={styles.searchInput} placeholder="Search" />
@@ -144,7 +140,7 @@ export default function Page11() {
               <button className={styles.refreshBtn}>⟳</button>
             </div>
             <div className={styles.readStudentSection}>
-              <ReadOccupancy />
+              <ReadVacatedlist />
             </div>
           </div>
         </div>
