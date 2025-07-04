@@ -63,7 +63,7 @@ export default function Page7() {
 
         const dataToSave = {
           rollnumber: row[0],
-          name: row[1],
+          username: row[1],
           degree: row[2],
           email: row[3],
           mobile: row[4],
