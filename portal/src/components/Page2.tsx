@@ -6,6 +6,7 @@ import CreateStudent from './Resource/CreateStudent-chandrahas';
 import ReadStudent from './Resource/ReadStudent';
 import CreateAllotment from './Resource/CreateAllotment-Vignesh';
 import ReadAllotment from './Resource/ReadAllotment-Vignesh';
+import UpdateAllotment from './Resource/UpdateAllotment';
 
 export default function Page2() {
   const navigate = useNavigate();
@@ -135,11 +136,6 @@ export default function Page2() {
             </div> */}
             <div className={styles.createStudentSection}>
               <CreateAllotment />
-            </div>
-            <div className={styles.searchSection}>
-              <input className={styles.searchInput} placeholder="Search" />
-              <button className={styles.searchBtn}>🔍︎</button>
-              <button className={styles.refreshBtn}>⟳</button>
             </div>
             <div className={styles.readStudentSection}>
               <ReadAllotment />

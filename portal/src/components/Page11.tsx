@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import styles from "./Page11.module.css";
-import { useNavigate } from 'react-router-dom';
+import styles from "./Page2.module.css";
+import { useNavigate, useLocation } from 'react-router-dom';
+
 
 import CreateStudent from './Resource/CreateStudent-chandrahas';
 import ReadStudent from './Resource/ReadStudent';
 import CreateAllotment from './Resource/CreateAllotment-Vignesh';
 import ReadAllotment from './Resource/ReadAllotment-Vignesh';
-import CreateOccupancy from './Resource/CreateOccupancy';
-import ReadOccupancy from './Resource/ReadOccupancy';
+import UpdateAllotment from './Resource/UpdateAllotment';
+import Edit from './Edit/EditAllotment-Vignesh';
 
 export default function Page11() {
+  type EditProps = {
+    id: any;
+  };
+  
+  const location = useLocation();
+  const id = location.state.id;
   const navigate = useNavigate();
   const [expandedDropdowns, setExpandedDropdowns] = useState({
     viewResident: false,
@@ -65,7 +72,7 @@ export default function Page11() {
             
             <button className={styles.navItem}>
               <span className={styles.navIcon}>⌂</span>
-              <span className={`${styles.navSubitem}/*  ${styles.active} */`}>Room Allotment</span>
+              <span className={`${styles.navSubitem} ${styles.active}`}>Room Allotment</span>
             </button>
             
             <button className={styles.navItem}>
@@ -124,7 +131,7 @@ export default function Page11() {
 
         <div className={`${styles.mainContent} ${sidebarCollapsed ? styles.sidebarCollapsed : ''}`}>
           <div className={styles.contentHeader}>
-            <div className={styles.pageTitle}>Room Allotment</div>
+            <div className={styles.pageTitle}>Update Room Allotment</div>
             <div className={styles.userProfile}>
               <div className={styles.profileCircle}>
                 <span className={styles.profileInitial}>◉</span>
@@ -136,15 +143,7 @@ export default function Page11() {
               <button className={styles.bulkUploadBtn}>Bulk Upload</button>
             </div> */}
             <div className={styles.createStudentSection}>
-              <CreateOccupancy />
-            </div>
-            <div className={styles.searchSection}>
-              <input className={styles.searchInput} placeholder="Search" />
-              <button className={styles.searchBtn}>🔍︎</button>
-              <button className={styles.refreshBtn}>⟳</button>
-            </div>
-            <div className={styles.readStudentSection}>
-              <ReadOccupancy />
+              
             </div>
           </div>
         </div>

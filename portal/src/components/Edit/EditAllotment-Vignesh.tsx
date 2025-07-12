@@ -1,30 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import apiConfig from '../../config/apiConfig';
-import styles from './CreateAllotment-Vignesh.module.css';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import apiConfig from "../../config/apiConfig";
+import styles from '../Resource/CreateAllotment-Vignesh.module.css';
 
-export type resourceMetaData = {
+export type ResourceMetaData = {
   resource: string;
   fieldValues: any[];
 };
 
-const CreateAllotment = () => {
-  const [resMetaData, setResMetaData] = useState<resourceMetaData[]>([]);
+const Edit = () => {
+  const location = useLocation();
+  const id = location.state.id;
+  const editedData = location.state.editedData;
+  const currUrl = location.state.currUrl;
+  const resName = location.state.resName;
+  const apiUrl = location.state.apiUrl;
+  const metadataUrl = location.state.metadataUrl;
+  const BaseUrl = location.state.BaseUrl;
+
+  const [editedRecord, setEditedRecord] = useState<any>(editedData || {});
   const [fields, setFields] = useState<any[]>([]);
-  const [dataToSave, setDataToSave] = useState<any>({});
-  const [showToast, setShowToast] = useState<any>(false);
-  const [foreignkeyData, setForeignkeyData] = useState<Record<string, any[]>>({});
+  const [resMetaData, setResMetaData] = useState<ResourceMetaData[]>([]);
+  const [requiredFields, setRequiredFields] = useState<string[]>([]);
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [foreignKeyData, setForeignKeyData] = useState<Record<string, any[]>>({});
   const [searchQueries, setSearchQueries] = useState<Record<string, string>>({});
   const [enums, setEnums] = useState<Record<string, any[]>>({});
-  const [searchQuery, setSearchQuery] = useState<string>('');
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
   const [studentData, setStudentData] = useState<any[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [rollNumberDropdownOpen, setRollNumberDropdownOpen] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [isMobile, setIsMobile] = useState<boolean>(false);
   
   const regex = /^(g_|archived|extra_data)/;
-  const apiUrl = apiConfig.getResourceUrl("allotment")
-  const metadataUrl = apiConfig.getResourceMetaDataUrl("Allotment")
 
   // Check for mobile screen size
   useEffect(() => {
@@ -37,27 +46,32 @@ const CreateAllotment = () => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Fetch metadata
   useEffect(() => {
     const fetchResMetaData = async () => {
       const fetchedResources = new Set();
       const fetchedEnum = new Set();
-      console.log("fectched resources",fetchedResources)
       try {
-        const data = await fetch(
+        const response = await fetch(
           metadataUrl,
           {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
           }
         );
 
-        if (data.ok) {
-          const metaData = await data.json();
+        if (response.ok) {
+          const metaData = await response.json();
           setResMetaData(metaData);
-          setFields(metaData[0].fieldValues);
-          const foreignFields = metaData[0].fieldValues.filter((field: any) => field.foreign);
-          console.log("foreign fields",foreignFields)
+
+          const fields = metaData[0]?.fieldValues || [];
+          setFields(fields);
+
+          const required = fields
+            .filter((field: any) => !regex.test(field.name))
+            .map((field: any) => field.name);
+          setRequiredFields(required);
+
+          const foreignFields = fields.filter((field: any) => field.foreign);
           for (const field of foreignFields) {
             if (!fetchedResources.has(field.foreign)) {
               fetchedResources.add(field.foreign);
@@ -65,7 +79,7 @@ const CreateAllotment = () => {
             }
           }
 
-          const enumFields = metaData[0].fieldValues.filter((field: any) => field.isEnum === true);
+          const enumFields = fields.filter((field: any) => field.isEnum === true);
           for (const field of enumFields) {
             if (!fetchedEnum.has(field.possible_value)) {
               fetchedEnum.add(field.possible_value);
@@ -73,21 +87,16 @@ const CreateAllotment = () => {
             }
           }
         } else {
-          console.error('Failed to fetch components:', data.statusText);
+          console.error("Failed to fetch metadata:", response.statusText);
         }
       } catch (error) {
-        console.error('Error fetching components:', error);
+        console.error("Error fetching metadata:", error);
       }
     };
 
     fetchResMetaData();
     fetchStudentData();
-   
-  }, []);
-
-  useEffect(()=>{
-    console.log("data to save",dataToSave)
-  },[dataToSave])
+  }, [resName]);
 
   // Fetch student data for roll number dropdown
   const fetchStudentData = async () => {
@@ -143,25 +152,24 @@ const CreateAllotment = () => {
   const fetchForeignData = async (foreignResource: string, fieldName: string, foreignField: string) => {
     try {
       const params = new URLSearchParams();
-      const ssid: any = sessionStorage.getItem('key');
-      params.append('queryId', 'GET_ALL');
-      params.append('session_id', ssid);
+      const ssid: any = sessionStorage.getItem("key");
+      params.append("queryId", "GET_ALL");
+      params.append("session_id", ssid);
 
       const response = await fetch(
-        `${apiConfig.API_BASE_URL}/${foreignResource.toLowerCase()}?`+params.toString(),
+        `${BaseUrl}/${foreignResource.toLowerCase()}?${params.toString()}`,
         {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
         }
       );
 
       if (response.ok) {
         const data = await response.json();
-        setForeignkeyData((prev) => ({
+        setForeignKeyData((prev) => ({
           ...prev,
-          [foreignResource]: data.resource
+          [foreignResource]: data.resource,
         }));
-        
       } else {
         console.error(`Error fetching foreign data for ${fieldName}:`, response.status);
       }
@@ -170,26 +178,11 @@ const CreateAllotment = () => {
     }
   };
 
-  const handleCreate = async () => {
-    const params = new URLSearchParams();
-    const jsonString = JSON.stringify(dataToSave);
-    const base64Encoded = btoa(jsonString);
-    params.append('resource', base64Encoded);
-    const ssid: any = sessionStorage.getItem('key');
-    params.append('session_id', ssid);
-    
-    const response = await fetch(apiUrl+`?`+params.toString(), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-
-    if (response.ok) {
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
-      setDataToSave({});
-    }
+  const handleEdit = (field: string, value: string) => {
+    setEditedRecord((prevData: any) => ({
+      ...prevData,
+      [field]: value,
+    }));
   };
 
   const handleSearchChange = (fieldName: string, value: string) => {
@@ -208,12 +201,11 @@ const CreateAllotment = () => {
     setSearchQuery(student.rollnumber || student.roll_number || '');
     
     // Auto-populate student fields
-    const updatedData = { ...dataToSave };
+    const updatedData = { ...editedRecord };
     
-    // Map student data to form fields - Fix the naming convention
-    // Student resource has 'name' attribute, allotment resource expects 'studentname'
+    // Map student data to form fields
     if (student.username) {
-      updatedData.studentname = student.username; // Map 'name' from student to 'studentname' in allotment
+      updatedData.studentname = student.username;
     }
     if (student.email) {
       updatedData.email = student.email;
@@ -225,12 +217,51 @@ const CreateAllotment = () => {
       updatedData.mobile = student.mobile || student.phone;
     }
     if (student.rollnumber || student.roll_number) {
-      updatedData.rollnumber =  student.id  /* student.rollnumber || student.roll_number */;
+      updatedData.rollnumber = student.id;
     }
     updatedData.roomnumber = '841679e6-7b33-43e9-bdf2-ade03b3b4771-42';
     
-    setDataToSave(updatedData);
+    setEditedRecord(updatedData);
     setRollNumberDropdownOpen(false);
+  };
+
+  const handleUpdate = async () => {
+    if (!editedRecord || Object.keys(editedRecord).length === 0) return;
+
+    const updatedRecord = {
+      id,
+      ...editedRecord,
+    };
+
+    const base64Encoded = btoa(JSON.stringify(updatedRecord));
+    const params = new URLSearchParams();
+    const ssid: any = sessionStorage.getItem("key");
+    params.append("resource", base64Encoded);
+    params.append("action", "MODIFY");
+    params.append("session_id", ssid);
+
+    try {
+      const response = await fetch(
+        apiUrl,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: params.toString(),
+        }
+      );
+
+      if (response.ok) {
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+        window.location.assign(currUrl);
+      } else {
+        console.error("Error updating record:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error in handleUpdate:", error);
+    }
   };
 
   const filteredStudents = studentData.filter((student) =>
@@ -238,7 +269,6 @@ const CreateAllotment = () => {
   );
 
   const getFieldDisplayName = (fieldName: string, isRequired: boolean = false) => {
-    // Convert field names to match common naming conventions
     const fieldMappings: Record<string, string> = {
       'name' : 'Studentname',
       'student_id': 'Studentname',
@@ -269,33 +299,30 @@ const CreateAllotment = () => {
     return isRequired ? `${displayName}*` : displayName;
   };
 
-  // Define field order and grouping based on the updated requirements
+  // Define field order and grouping
   const getFieldOrder = () => {
-    // Left column: student details (auto-populated from roll number selection)
-    const leftColumnFields = ['email', 'degree', 'mobile']; // Exclude studentname as it's handled separately
-    
-    // Right column: other allotment fields (excluding rollnumber as it's now in search section)
+    const leftColumnFields = ['email', 'degree', 'mobile'];
     const rightColumnFields = ['checkindnt','checkoutdnt','remarks'];
     
     const leftFields = fields.filter(field => 
       field.name !== 'id' && 
       !regex.test(field.name) && 
-      field.name !== 'rollnumber' && // Exclude rollnumber from form fields
-      field.name !== 'studentname' && // Exclude studentname from leftFields
+      field.name !== 'rollnumber' && 
+      field.name !== 'studentname' && 
       leftColumnFields.includes(field.name.toLowerCase())
     ).sort((a, b) => leftColumnFields.indexOf(a.name.toLowerCase()) - leftColumnFields.indexOf(b.name.toLowerCase()));
     
     const rightFields = fields.filter(field => 
       field.name !== 'id' && 
       !regex.test(field.name) && 
-      field.name !== 'rollnumber' && // Exclude rollnumber from form fields
+      field.name !== 'rollnumber' && 
       rightColumnFields.includes(field.name.toLowerCase())
     ).sort((a, b) => rightColumnFields.indexOf(a.name.toLowerCase()) - rightColumnFields.indexOf(b.name.toLowerCase()));
     
     return { leftFields, rightFields };
   };
 
-  // Render Name function to explicitly render student name
+  // Render Name function
   const renderName = () => {
     const isAutoPopulated = selectedStudent;
     
@@ -305,23 +332,21 @@ const CreateAllotment = () => {
           type="text"
           name="studentname"
           placeholder="Student Name*"
-          value={selectedStudent ? selectedStudent.username : (dataToSave.studentname || '')}
-          onChange={(e) => setDataToSave({ ...dataToSave, studentname: e.target.value })}
+          value={editedRecord.studentname || ''}
+          onChange={(e) => handleEdit('studentname', e.target.value)}
           className={`${styles.formInput} ${isAutoPopulated ? styles.autoPopulated : ''}`}
-          readOnly={true}
+          readOnly
         />
-
       </div>
     );
   };
 
   const renderField = (field: any, index: number) => {
-    // For student detail fields, make them read-only if auto-populated
     const isStudentDetailField = ['email', 'degree', 'mobile'].includes(field.name.toLowerCase());
     const isAutoPopulated = selectedStudent && isStudentDetailField;
 
     if (field.foreign) {
-      const options = foreignkeyData[field.foreign] || [];
+      const options = foreignKeyData[field.foreign] || [];
       const filteredOptions = options.filter((option) =>
         option[field.foreign_field].toLowerCase().includes((searchQueries[field.name] || '').toLowerCase())
       );
@@ -332,14 +357,12 @@ const CreateAllotment = () => {
             type="text"
             className={`${styles.formInput} ${styles.dropdownDisplay} ${isAutoPopulated ? styles.autoPopulated : ''}`}
             placeholder={getFieldDisplayName(field.name, field.required)}
-            value={dataToSave[field.name] ? 
-              options.find((item) => item[field.name] === dataToSave[field.name])?.[field.name] || '' 
-              : ''}
+            value={editedRecord[field.name] || ''}
             readOnly
             onClick={() => !isAutoPopulated && toggleDropdown(field.name)}
           />
           {!isAutoPopulated && (
-            <div className={`${styles.dropdownMenu} ${false ? styles.show : ''}`}>
+            <div className={`${styles.dropdownMenu} ${openDropdowns[field.name] ? styles.show : ''}`}>
               <input
                 type="text"
                 className={styles.dropdownSearch}
@@ -355,11 +378,11 @@ const CreateAllotment = () => {
                     className={styles.dropdownItem}
                     type="button"
                     onClick={() => {
-                      setDataToSave({ ...dataToSave, [field.name]: option[field.name] });
+                      handleEdit(field.name, option[field.foreign_field]);
                       toggleDropdown(field.name);
                     }}
                   >
-                    {option[field.name]}
+                    {option[field.foreign_field]}
                   </button>
                 ))
               ) : (
@@ -375,8 +398,8 @@ const CreateAllotment = () => {
           <select
             name={field.name}
             required={field.required}
-            value={dataToSave[field.name] || ''}
-            onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
+            value={editedRecord[field.name] || ''}
+            onChange={(e) => handleEdit(field.name, e.target.value)}
             className={`${styles.formInput} ${styles.formSelect} ${isAutoPopulated ? styles.autoPopulated : ''}`}
             disabled={isAutoPopulated}
           >
@@ -390,7 +413,6 @@ const CreateAllotment = () => {
         </div>
       );
     } else {
-      // Special handling for different field types
       const isTextarea = field.name.toLowerCase() === 'remarks' || field.type === 'textarea';
       const isDateField = field.name.toLowerCase().includes('date') || field.name.toLowerCase().includes('dt');
       
@@ -401,8 +423,8 @@ const CreateAllotment = () => {
               name={field.name}
               required={field.required}
               placeholder={getFieldDisplayName(field.name, field.required)}
-              value={dataToSave[field.name] || ''}
-              onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
+              value={editedRecord[field.name] || ''}
+              onChange={(e) => handleEdit(field.name, e.target.value)}
               className={`${styles.formInput} ${styles.formTextarea} ${isAutoPopulated ? styles.autoPopulated : ''}`}
               rows={isMobile ? 3 : 4}
               readOnly={isAutoPopulated}
@@ -417,8 +439,8 @@ const CreateAllotment = () => {
               name={field.name}
               required={field.required}
               placeholder={getFieldDisplayName(field.name, field.required)}
-              value={dataToSave[field.name] || ''}
-              onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
+              value={editedRecord[field.name] || ''}
+              onChange={(e) => handleEdit(field.name, e.target.value)}
               className={`${styles.formInput} ${styles.dateInput} ${isAutoPopulated ? styles.autoPopulated : ''}`}
               readOnly={isAutoPopulated}
             />
@@ -432,8 +454,8 @@ const CreateAllotment = () => {
               name={field.name}
               required={field.required}
               placeholder={getFieldDisplayName(field.name, field.required)}
-              value={dataToSave[field.name] || ''}
-              onChange={(e) => setDataToSave({ ...dataToSave, [e.target.name]: e.target.value })}
+              value={editedRecord[field.name] || ''}
+              onChange={(e) => handleEdit(field.name, e.target.value)}
               className={`${styles.formInput} ${isAutoPopulated ? styles.autoPopulated : ''}`}
               readOnly={isAutoPopulated}
             />
@@ -494,7 +516,7 @@ const CreateAllotment = () => {
 
       {/* Form Container */}
       <div className={styles.formContainer}>
-        {/* Left Column - Student Details (Auto-populated) or Single column on mobile */}
+        {/* Left Column - Student Details */}
         <div className={styles.leftColumn}>
           {/* Render student name explicitly */}
           {renderName()}
@@ -503,15 +525,15 @@ const CreateAllotment = () => {
           {leftFields.map((field, index) => renderField(field, index))}
         </div>
 
-        {/* Right Column - Other Allotment Fields (Hidden on mobile, fields moved to left column) */}
+        {/* Right Column - Other Fields */}
         <div className={styles.rightColumn}>
           {rightFields.map((field, index) => renderField(field, index))}
         </div>
       </div>
       
       <div className={styles.formActions}>
-        <button className={styles.submitButton} onClick={handleCreate}>
-          Room Allot
+        <button className={styles.submitButton} onClick={handleUpdate}>
+          Update Record
         </button>
       </div>
 
@@ -528,7 +550,7 @@ const CreateAllotment = () => {
                 ×
               </button>
             </div>
-            <div className={styles.toastBody}>Room allotted successfully!</div>
+            <div className={styles.toastBody}>Updated successfully!</div>
           </div>
         </div>
       )}
@@ -536,4 +558,4 @@ const CreateAllotment = () => {
   );
 };
 
-export default CreateAllotment;
+export default Edit;

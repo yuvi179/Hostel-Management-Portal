@@ -15,11 +15,13 @@ import Page12 from "./components/Page12";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Edit from "./components/Edit/Edit";
+import EditAllotment from "./components/Edit/EditAllotment-Vignesh";
 
 function App() {
   return (
     <Routes>
       <Route path="/edit" element={<Edit />} />
+      <Route path="/editallotment" element={<Page11 />} />
       <Route path="/page1" element={<Page1 />} />
       <Route path="/login" element={<Login />} />
       <Route path="/page3" element={<Page3 />} />
