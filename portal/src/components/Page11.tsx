@@ -143,7 +143,7 @@ export default function Page11() {
               <button className={styles.bulkUploadBtn}>Bulk Upload</button>
             </div> */}
             <div className={styles.createStudentSection}>
-              
+              <Edit />
             </div>
           </div>
         </div>
