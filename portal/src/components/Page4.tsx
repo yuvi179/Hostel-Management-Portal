@@ -63,12 +63,12 @@ export default function Page2() {
             
             <button className={styles.navItem}>
               <span className={styles.navIcon}>⌂</span>
-              <span className={`${styles.navSubitem} ${styles.active}`}>Room Allotment</span>
+              <span className={styles.navSubitem}>Room Allotment</span>
             </button>
             
             <button className={styles.navItem}>
               <span className={styles.navIcon}>⤋</span>
-              <span className={styles.navText}>Check In</span>
+              <span className={`${styles.navSubitem} ${styles.active}`}>Check In</span>
             </button>
             
             <button className={styles.navItem}>
@@ -136,11 +136,7 @@ export default function Page2() {
             <div className={styles.createStudentSection}>
               <UpdateAllotment />
             </div>
-            <div className={styles.searchSection}>
-              <input className={styles.searchInput} placeholder="Search" />
-              <button className={styles.searchBtn}>🔍︎</button>
-              <button className={styles.refreshBtn}>⟳</button>
-            </div>
+           
             <div className={styles.readStudentSection}>
               <ReadAllotment />
             </div>

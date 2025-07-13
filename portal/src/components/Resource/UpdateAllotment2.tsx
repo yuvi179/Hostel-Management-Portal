@@ -258,7 +258,7 @@ const UpdateAllotment = () => {
       'checkoutdnt': 'Check Out Date & Time',
       'newroomnumber': 'New Room Number',
       'oldroomnumber': 'Old Room Number',
-      'isshift': 'Is Shift',
+      'isshift': 'Shift',
       'rollnumber': 'Roll Number'
     };
     
@@ -271,8 +271,8 @@ const UpdateAllotment = () => {
     // Left column: student details (exactly like create allotment)
     const leftColumnFields = ['email', 'degree', 'mobile']; // Exclude studentname as it's handled separately
     
-    // Right column: check-in/check-out and remarks
-    const rightColumnFields = ['checkindnt', 'checkoutdnt', 'remarks'];
+    // Right column: check-out and remarks only
+    const rightColumnFields = ['checkoutdnt', 'remarks'];
     
     const leftFields = fields.filter(field => 
       field.name !== 'id' && 
@@ -423,6 +423,23 @@ const UpdateAllotment = () => {
     }
   };
 
+  const renderShiftCheckbox = () => {
+    return (
+      <div className={styles.formField}>
+        <label className={styles.checkboxContainer}>
+          <input
+            type="checkbox"
+            name="isshift"
+            checked={dataToSave.isshift || false}
+            onChange={(e) => setDataToSave({ ...dataToSave, isshift: e.target.checked })}
+            className={styles.checkboxInput}
+          />
+          <span className={styles.checkboxLabel}>{getFieldDisplayName('isshift')}</span>
+        </label>
+      </div>
+    );
+  };
+
   const { leftFields, rightFields } = getFieldOrder();
 
   return (
@@ -490,9 +507,10 @@ const UpdateAllotment = () => {
           {leftFields.map((field, index) => renderField(field, index))}
         </div>
 
-        {/* Right Column - Check-in/Check-out and Remarks */}
+        {/* Right Column - Check-out, Remarks and Shift Checkbox */}
         <div className={styles.rightColumn}>
           {rightFields.map((field, index) => renderField(field, index))}
+          {renderShiftCheckbox()}
         </div>
       </div>
       
@@ -502,7 +520,7 @@ const UpdateAllotment = () => {
           onClick={handleUpdate}
           disabled={!selectedAllotment}
         >
-          Check In
+          Check Out
         </button>
       </div>
 
